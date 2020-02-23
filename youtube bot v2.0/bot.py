@@ -146,7 +146,7 @@ with open('proxies.csv') as file:
 	for proxy in reader:
 		all_proxies.append({'ip' : proxy[0], 'port' : proxy[1], 'username' : proxy[2], 'password' : proxy[3]})
 
-num_threads = 5
+num_threads = 1
 
 devided_proxies = list(divide_chunks(all_proxies, int(len(all_proxies)/num_threads)))
 
