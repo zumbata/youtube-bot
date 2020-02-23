@@ -1,63 +1,155 @@
+import zipfile
+import csv
+import threading
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver import ChromeOptions
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from time import sleep
 from random import uniform
 from random import choice
 from datetime import datetime
+from pyvirtualdisplay import Display
+
+def divide_chunks(l, n):
+    for i in range(0, len(l), n):  
+        yield l[i:i + n] 
 
 def wait(x, y):
 	sleep(uniform(x, y))
 
-def find_element(by, strr):
-	global waitt
+def find_element(waitt, by, strr):
 	return waitt.until(EC.visibility_of_element_located((by, strr)))
-	
-def mydriver():
-	options = Options()
-	options.headless = False
-	return webdriver.Firefox(options=options)
 
-def main():
-	global driver, waitt
-	keywords = []
+def mydriver(ip, port, username, password):
+	manifest_json = """
+	{
+		"version": "1.0.0",
+		"manifest_version": 2,
+		"name": "Chrome Proxy",
+		"permissions": [
+			"proxy",
+			"tabs",
+			"unlimitedStorage",
+			"storage",
+			"<all_urls>",
+			"webRequest",
+			"webRequestBlocking"
+		],
+		"background": {
+			"scripts": ["background.js"]
+		},
+		"minimum_chrome_version":"22.0.0"
+	}
+	"""
+
+	background_js = """
+	var config = {
+			mode: "fixed_servers",
+			rules: {
+			singleProxy: {
+				scheme: "http",
+				host: "%s",
+				port: parseInt(%s)
+			},
+			bypassList: ["localhost"]
+			}
+		};
+
+	chrome.proxy.settings.set({value: config, scope: "regular"}, function() {});
+
+	function callbackFn(details) {
+		return {
+			authCredentials: {
+				username: "%s",
+				password: "%s"
+			}
+		};
+	}
+
+	chrome.webRequest.onAuthRequired.addListener(
+				callbackFn,
+				{urls: ["<all_urls>"]},
+				['blocking']
+	);
+	""" % (ip, port, username, password)
+	capa = DesiredCapabilities.CHROME
+	capa["pageLoadStrategy"] = "none"
+	userAgent = 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36'
+	chrome_options = ChromeOptions()
+	pluginfile = 'proxy_auth_plugin.zip'
+	with zipfile.ZipFile(pluginfile, 'w') as zp:
+		zp.writestr("manifest.json", manifest_json)
+		zp.writestr("background.js", background_js)
+	chrome_options.add_extension(pluginfile)
+	chrome_options.add_extension('cmedhionkhpnakcndndgjdbohmhepckk.crx')
+	chrome_options.add_argument(f'user-agent={userAgent}')
+	chrome_options.add_argument('--no-sandbox')
+	chrome_options.add_argument("--start-maximized")
+	chrome_options.add_experimental_option("excludeSwitches", ['enable-automation'])
+	chrome_options.add_experimental_option("useAutomationExtension", False)
+	driver = webdriver.Chrome(desired_capabilities=capa, chrome_options=chrome_options)
+	return driver
+
+def func(proxies):
+	for proxy in proxies:
+		driver = mydriver(proxy['ip'], proxy['port'], proxy['username'], proxy['password'])
+		waitt = WebDriverWait(driver, 40)
+		main(driver, waitt)
+
+def main(driver, waitt):
+	# print("Please eneter link to search: ")
 	# wanted_link = input()
+	# print("Please enter min watchtime")
+	# wanted_time_min = int(input())
+	# print("Please enter max watchtime")
+	# wanted_time_max = int(input())
+	wanted_time_min = 60
+	wanted_time_max = 90
 	wanted_link = 'https://www.youtube.com/watch?v=pRKqlw0DaDI'
+	keywords = []
 	with open('keywords.csv') as file:
 		keywords = file.readlines()
 	driver.get('https://www.youtube.com/')
-	search_bar = find_element(By.CSS_SELECTOR, 'input#search')
+	search_bar = find_element(waitt, By.CSS_SELECTOR, 'input#search')
 	search_bar.send_keys(choice(keywords))
 	wait(0.5, 1.5)
 	search_bar.send_keys(Keys.RETURN)
-	for x in range(1,50):
+	for x in range(1,100):
 		wait(1.0, 2.5)
-		link = find_element(By.CSS_SELECTOR, 'ytd-video-renderer.ytd-item-section-renderer:nth-child({}) > div:nth-child(1) > ytd-thumbnail:nth-child(1) > a'.format(str(x)))
+		try:
+			link = find_element(waitt, By.CSS_SELECTOR, 'ytd-video-renderer.ytd-item-section-renderer:nth-child({}) > div:nth-child(1) > ytd-thumbnail:nth-child(1) > a'.format(str(x)))
+		except:
+			continue
 		driver.execute_script('arguments[0].scrollIntoView();', link)
 		href = link.get_attribute('href')
 		if href in wanted_link :
 			wait(0.5, 1.5)
 			driver.execute_script('arguments[0].click();', link)
 			break
-	time_dur = find_element(By.CSS_SELECTOR, '.ytp-time-duration').text
-	if len(time_dur.split(':')) == 2: 
-		time_dur = '00:' + time_dur
-	pt = datetime.strptime(time_dur,'%H:%M:%S')
-	total_seconds = pt.second + pt.minute*60 + pt.hour * 3600
-	wait(total_seconds * 0.5, total_seconds * 0.6)
-	elem = find_element(By.CSS_SELECTOR, 'ytd-compact-video-renderer.style-scope:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > a:nth-child(1)')
+	wait(wanted_time_min, wanted_time_max)
+	elem = find_element(waitt, By.CSS_SELECTOR, 'ytd-compact-video-renderer.style-scope:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > a:nth-child(1)')
 	driver.execute_script('arguments[0].click();', elem)
-	time_dur = find_element(By.CSS_SELECTOR, '.ytp-time-duration').text
-	if len(time_dur.split(':')) == 2: 
-		time_dur = '00:' + time_dur
-	pt = datetime.strptime(time_dur,'%H:%M:%S')
-	total_seconds = pt.second + pt.minute*60 + pt.hour * 3600
-	wait(total_seconds * 0.05, total_seconds * 0.1)
+	wait(60, 90)
 	driver.quit()
+	display.stop()
 
-driver = mydriver()
-waitt = WebDriverWait(driver, 30)
-main()
+all_proxies = []
+display = Display(visible=0, size=(800, 600))
+display.start()
+
+with open('proxies.csv') as file:
+	reader = csv.reader(file, delimiter=';')
+	for proxy in reader:
+		all_proxies.append({'ip' : proxy[0], 'port' : proxy[1], 'username' : proxy[2], 'password' : proxy[3]})
+
+num_threads = 5
+
+devided_proxies = list(divide_chunks(all_proxies, int(len(all_proxies)/num_threads)))
+
+for group_proxies in devided_proxies:
+	some_thread = threading.Thread(target=func, args=(group_proxies,))
+	some_thread.start()

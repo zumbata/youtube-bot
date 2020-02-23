@@ -12,6 +12,8 @@ from time import sleep
 from random import uniform
 from random import choice
 from datetime import datetime
+from pyvirtualdisplay import Display
+
 
 def wait(x, y):
 	sleep(uniform(x, y))
@@ -28,8 +30,6 @@ def mydriver():
 	userAgent = 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36'
 	chrome_options = ChromeOptions()
 	chrome_options.add_argument(f'user-agent={userAgent}')
-	chrome_options.add_argument("--headless")
-	# chrome_options.add_argument("--profile-directory=Profile 1")
 	chrome_options.add_extension('cmedhionkhpnakcndndgjdbohmhepckk.crx')
 	chrome_options.add_argument('--no-sandbox')
 	chrome_options.add_argument("--start-maximized")
@@ -42,6 +42,9 @@ def mydriver():
 # def switchIP():
 # 	os.system("expressvpn disconnect")
 # 	os.system("expressvpn connect smart")
+
+display = Display(size=(800, 600))
+display.start()
 
 accounts = []
 keywords = []
@@ -91,7 +94,7 @@ for account in accounts:
 		print("Problem. Trying again.")
 # 		switchIP()
 		continue
-	for x in range(1,50):
+	for x in range(1,100):
 		wait(1, 2.5)
 		try:
 			link = find_element(By.CSS_SELECTOR, 'ytd-video-renderer.ytd-item-section-renderer:nth-child({}) > div:nth-child(1) > ytd-thumbnail:nth-child(1) > a'.format(str(x)))
@@ -139,4 +142,5 @@ for account in accounts:
 	total_seconds = pt.second + pt.minute*60 + pt.hour * 3600
 	wait(total_seconds * 0.05, total_seconds * 0.1)
 	driver.quit()
+	display.stop()
 	print("Done. Proceeding with the nex one.")
