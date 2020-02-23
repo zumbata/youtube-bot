@@ -12,7 +12,6 @@ from time import sleep
 from random import uniform
 from random import choice
 from datetime import datetime
-from fake_useragent import UserAgent
 
 def wait(x, y):
 	sleep(uniform(x, y))
@@ -29,7 +28,7 @@ def mydriver():
 	userAgent = 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36'
 	chrome_options = ChromeOptions()
 	chrome_options.add_argument(f'user-agent={userAgent}')
-	# chrome_options.add_argument("--headless")
+	chrome_options.add_argument("--headless")
 	# chrome_options.add_argument("--profile-directory=Profile 1")
 	chrome_options.add_extension('cmedhionkhpnakcndndgjdbohmhepckk.crx')
 	chrome_options.add_argument('--no-sandbox')
