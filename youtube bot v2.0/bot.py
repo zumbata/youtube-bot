@@ -114,10 +114,9 @@ def main(driver, waitt):
 	with open('keywords.csv') as file:
 		keywords = file.readlines()
 	driver.get('https://www.youtube.com/')
-	search_bar = find_element(waitt, By.CSS_SELECTOR, 'input#search')
-	search_bar.send_keys(choice(keywords))
+	find_element(waitt, By.CSS_SELECTOR, 'input#search').send_keys(choice(keywords))
 	wait(0.5, 1.5)
-	search_bar.send_keys(Keys.RETURN)
+	find_element(waitt, By.CSS_SELECTOR, 'input#search').send_keys(Keys.RETURN)
 	for x in range(1,100):
 		wait(1.0, 2.5)
 		try:
