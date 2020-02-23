@@ -102,15 +102,7 @@ def func(proxies):
 		main(driver, waitt)
 
 def main(driver, waitt):
-	# print("Please eneter link to search: ")
-	# wanted_link = input()
-	# print("Please enter min watchtime")
-	# wanted_time_min = int(input())
-	# print("Please enter max watchtime")
-	# wanted_time_max = int(input())
-	wanted_time_min = 60
-	wanted_time_max = 90
-	wanted_link = 'https://www.youtube.com/watch?v=pRKqlw0DaDI'
+	global wanted_link, wanted_time_min, wanted_time_max
 	keywords = []
 	with open('keywords.csv') as file:
 		keywords = file.readlines()
@@ -137,6 +129,20 @@ def main(driver, waitt):
 	driver.quit()
 	sleep(3)
 
+print("Please enter link to search: ")
+wanted_link = input()
+print("Please enter min watchtime")
+wanted_time_min = int(input())
+print("Please enter max watchtime")
+wanted_time_max = int(input())
+print("Please enter number of threads")
+num_threads = int(input())
+
+# wanted_time_min = 60
+# wanted_time_max = 90
+# wanted_link = 'https://www.youtube.com/watch?v=pRKqlw0DaDI'
+# num_threads = 1
+
 all_proxies = []
 display = Display(visible=0, size=(800, 600))
 display.start()
@@ -145,8 +151,6 @@ with open('proxies.csv') as file:
 	reader = csv.reader(file, delimiter=';')
 	for proxy in reader:
 		all_proxies.append({'ip' : proxy[0], 'port' : proxy[1], 'username' : proxy[2], 'password' : proxy[3]})
-
-num_threads = 1
 
 devided_proxies = list(divide_chunks(all_proxies, int(len(all_proxies)/num_threads)))
 
