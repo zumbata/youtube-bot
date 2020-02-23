@@ -89,6 +89,7 @@ def mydriver(ip, port, username, password):
 	chrome_options.add_argument(f'user-agent={userAgent}')
 	chrome_options.add_argument('--no-sandbox')
 	chrome_options.add_argument("--start-maximized")
+	chrome_options.add_argument('--disable-dev-shm-usage')
 	chrome_options.add_experimental_option("excludeSwitches", ['enable-automation'])
 	chrome_options.add_experimental_option("useAutomationExtension", False)
 	driver = webdriver.Chrome(desired_capabilities=capa, chrome_options=chrome_options)
@@ -134,7 +135,7 @@ def main(driver, waitt):
 	driver.execute_script('arguments[0].click();', elem)
 	wait(60, 90)
 	driver.quit()
-	display.stop()
+	sleep(3)
 
 all_proxies = []
 display = Display(visible=0, size=(800, 600))
@@ -152,3 +153,8 @@ devided_proxies = list(divide_chunks(all_proxies, int(len(all_proxies)/num_threa
 for group_proxies in devided_proxies:
 	some_thread = threading.Thread(target=func, args=(group_proxies,))
 	some_thread.start()
+
+while threading.active_count() > 1:
+	sleep(1)
+
+display.stop()
