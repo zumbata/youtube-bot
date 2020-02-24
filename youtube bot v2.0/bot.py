@@ -97,6 +97,9 @@ def mydriver(ip, port, username, password):
 	except:
 		sleep(5)
 		driver = webdriver.Chrome(desired_capabilities=capa, chrome_options=chrome_options)
+	driver.implicitly_wait(20)
+	driver.set_page_load_timeout(20)
+	driver.set_script_timeout(20)
 	return driver
 
 def func(proxies):
@@ -130,12 +133,9 @@ def main(driver, waitt):
 			driver.execute_script('arguments[0].click();', link)
 			break
 	wait(wanted_time_min, wanted_time_max)
-	try:
-		elem = find_element(waitt, By.CSS_SELECTOR, 'ytd-compact-video-renderer.style-scope:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > a:nth-child(1)')
-		driver.execute_script('arguments[0].click();', elem)
-		wait(60, 90)
-	except:
-		pass
+	elem = find_element(waitt, By.CSS_SELECTOR, 'ytd-compact-video-renderer.style-scope:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > a:nth-child(1)')
+	driver.execute_script('arguments[0].click();', elem)
+	wait(60, 90)
 	driver.quit()
 	sleep(3)
 
