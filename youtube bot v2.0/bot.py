@@ -130,9 +130,12 @@ def main(driver, waitt):
 			driver.execute_script('arguments[0].click();', link)
 			break
 	wait(wanted_time_min, wanted_time_max)
-	elem = find_element(waitt, By.CSS_SELECTOR, 'ytd-compact-video-renderer.style-scope:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > a:nth-child(1)')
-	driver.execute_script('arguments[0].click();', elem)
-	wait(60, 90)
+	try:
+		elem = find_element(waitt, By.CSS_SELECTOR, 'ytd-compact-video-renderer.style-scope:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > a:nth-child(1)')
+		driver.execute_script('arguments[0].click();', elem)
+		wait(60, 90)
+	except:
+		pass
 	driver.quit()
 	sleep(3)
 
