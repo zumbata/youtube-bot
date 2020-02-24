@@ -22,7 +22,7 @@ def wait(x, y):
 	sleep(uniform(x, y))
 
 def find_element(waitt, by, strr):
-	return waitt.until(EC.visibility_of_element_located((by, strr)))
+	return waitt.until(EC.presence_of_element_located((by, strr)))
 
 def mydriver(ip, port, username, password):
 	manifest_json = """
