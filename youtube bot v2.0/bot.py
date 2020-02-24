@@ -104,7 +104,7 @@ def func(proxies):
 def main(driver, waitt):
 	global wanted_link, wanted_time_min, wanted_time_max
 	keywords = []
-	with open('keywords.csv') as file:
+	with open('keywords.csv', encoding='utf-8') as file:
 		keywords = file.readlines()
 	driver.get('https://www.youtube.com/')
 	find_element(waitt, By.CSS_SELECTOR, 'input#search').send_keys(choice(keywords))
