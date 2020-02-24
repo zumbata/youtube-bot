@@ -92,7 +92,11 @@ def mydriver(ip, port, username, password):
 	chrome_options.add_argument('--disable-dev-shm-usage')
 	chrome_options.add_experimental_option("excludeSwitches", ['enable-automation'])
 	chrome_options.add_experimental_option("useAutomationExtension", False)
-	driver = webdriver.Chrome(desired_capabilities=capa, chrome_options=chrome_options)
+	try:
+		driver = webdriver.Chrome(desired_capabilities=capa, chrome_options=chrome_options)
+	except:
+		sleep(5)
+		driver = webdriver.Chrome(desired_capabilities=capa, chrome_options=chrome_options)
 	return driver
 
 def func(proxies):
@@ -107,9 +111,12 @@ def main(driver, waitt):
 	with open('keywords.csv', encoding='utf-8') as file:
 		keywords = file.readlines()
 	driver.get('https://www.youtube.com/')
-	find_element(waitt, By.CSS_SELECTOR, 'input#search').send_keys(choice(keywords))
-	wait(0.5, 1.5)
-	find_element(waitt, By.CSS_SELECTOR, 'input#search').send_keys(Keys.RETURN)
+	try:
+		find_element(waitt, By.CSS_SELECTOR, 'input#search').send_keys(choice(keywords))
+		wait(0.5, 1.5)
+		find_element(waitt, By.CSS_SELECTOR, 'input#search').send_keys(Keys.RETURN)
+	except:
+		return
 	for x in range(1,100):
 		wait(1.0, 2.5)
 		try:
