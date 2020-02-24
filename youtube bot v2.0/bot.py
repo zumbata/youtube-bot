@@ -118,24 +118,28 @@ def main(driver, waitt):
 		find_element(waitt, By.CSS_SELECTOR, 'input#search').send_keys(choice(keywords))
 		wait(0.5, 1.5)
 		find_element(waitt, By.CSS_SELECTOR, 'input#search').send_keys(Keys.RETURN)
+		for x in range(1,100):
+			wait(1.0, 2.5)
+			try:
+				link = find_element(waitt, By.CSS_SELECTOR, 'ytd-video-renderer.ytd-item-section-renderer:nth-child({}) > div:nth-child(1) > ytd-thumbnail:nth-child(1) > a'.format(str(x)))
+			except:
+				continue
+			driver.execute_script('arguments[0].scrollIntoView();', link)
+			href = link.get_attribute('href')
+			if href in wanted_link :
+				wait(0.5, 1.5)
+				driver.execute_script('arguments[0].click();', link)
+				break
 	except:
-		return
-	for x in range(1,100):
-		wait(1.0, 2.5)
-		try:
-			link = find_element(waitt, By.CSS_SELECTOR, 'ytd-video-renderer.ytd-item-section-renderer:nth-child({}) > div:nth-child(1) > ytd-thumbnail:nth-child(1) > a'.format(str(x)))
-		except:
-			continue
-		driver.execute_script('arguments[0].scrollIntoView();', link)
-		href = link.get_attribute('href')
-		if href in wanted_link :
-			wait(0.5, 1.5)
-			driver.execute_script('arguments[0].click();', link)
-			break
+		driver.get(wanted_link)
+		wait(2, 3)
 	wait(wanted_time_min, wanted_time_max)
-	elem = find_element(waitt, By.CSS_SELECTOR, 'ytd-compact-video-renderer.style-scope:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > a:nth-child(1)')
-	driver.execute_script('arguments[0].click();', elem)
-	wait(60, 90)
+	try:
+		elem = find_element(waitt, By.CSS_SELECTOR, 'ytd-compact-video-renderer.style-scope:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > a:nth-child(1)')
+		driver.execute_script('arguments[0].click();', elem)
+		wait(60, 90)
+	except:
+		pass
 	driver.quit()
 	sleep(3)
 
