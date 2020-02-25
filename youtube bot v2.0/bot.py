@@ -12,7 +12,7 @@ from time import sleep
 from random import uniform
 from random import choice
 from datetime import datetime
-from pyvirtualdisplay import Display
+# from pyvirtualdisplay import Display
 
 def divide_chunks(l, n):
     for i in range(0, len(l), n):  
@@ -114,30 +114,31 @@ def main(driver, waitt):
 	with open('keywords.csv', encoding='utf-8') as file:
 		keywords = file.readlines()
 	driver.get('https://www.youtube.com/')
-	try:
-		find_element(waitt, By.CSS_SELECTOR, 'input#search').send_keys(choice(keywords))
-		wait(0.5, 1.5)
-		find_element(waitt, By.CSS_SELECTOR, 'input#search').send_keys(Keys.RETURN)
-		for x in range(1,100):
-			wait(1.0, 2.5)
-			try:
-				link = find_element(waitt, By.CSS_SELECTOR, 'ytd-video-renderer.ytd-item-section-renderer:nth-child({}) > div:nth-child(1) > ytd-thumbnail:nth-child(1) > a'.format(str(x)))
-			except:
-				continue
-			driver.execute_script('arguments[0].scrollIntoView();', link)
-			href = link.get_attribute('href')
-			if href in wanted_link :
-				wait(0.5, 1.5)
-				driver.execute_script('arguments[0].click();', link)
-				break
-	except:
+	flag = False
+	find_element(waitt, By.CSS_SELECTOR, 'input#search').send_keys(choice(keywords))
+	wait(0.5, 1.5)
+	find_element(waitt, By.CSS_SELECTOR, 'input#search').send_keys(Keys.RETURN)
+	for x in range(1,10):
+		wait(1.0, 2.5)
+		try:
+			link = find_element(waitt, By.CSS_SELECTOR, 'ytd-video-renderer.ytd-item-section-renderer:nth-child({}) > div:nth-child(1) > ytd-thumbnail:nth-child(1) > a'.format(str(x)))
+		except:
+			continue
+		driver.execute_script('arguments[0].scrollIntoView();', link)
+		href = link.get_attribute('href')
+		if href in wanted_link :
+			wait(0.5, 1.5)
+			driver.execute_script('arguments[0].click();', link)
+			flag = True
+			break
+	if flag == False:
 		driver.get(wanted_link)
 		wait(2, 3)
-	wait(wanted_time_min, wanted_time_max)
+	wait(wanted_time_min+30, wanted_time_max+30)
 	try:
 		elem = find_element(waitt, By.CSS_SELECTOR, 'ytd-compact-video-renderer.style-scope:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > a:nth-child(1)')
 		driver.execute_script('arguments[0].click();', elem)
-		wait(60, 90)
+		wait(10, 20)
 	except:
 		pass
 	driver.quit()
@@ -158,8 +159,8 @@ num_threads = int(input())
 # num_threads = 1
 
 all_proxies = []
-display = Display(visible=0, size=(800, 600))
-display.start()
+# display = Display(visible=0, size=(800, 600))
+# display.start()
 
 with open('proxies.csv') as file:
 	reader = csv.reader(file, delimiter=';')
@@ -175,4 +176,4 @@ for group_proxies in devided_proxies:
 while threading.active_count() > 1:
 	sleep(1)
 
-display.stop()
+# display.stop()
