@@ -10,7 +10,7 @@ import keyboard
 
 def LoadUserAgents(uafile):
     uas = []
-    with open(uafile, 'rb') as uaf:
+    with open(uafile, 'r') as uaf:
         for ua in uaf.readlines():
             uas.append(ua.strip())
     random.shuffle(uas)
