@@ -4,10 +4,11 @@ import csv
 import requests
 from selenium import webdriver
 from selenium.webdriver.common.proxy import Proxy, ProxyType
-from pynput.keyboard import Key, Controller
 from bs4 import BeautifulSoup
 import threading
 from pyvirtualdisplay import Display
+import keyboard
+
 
 
 def LoadUserAgents(uafile):
@@ -25,7 +26,7 @@ def divide_chunks(l, n):
 
 
 def func(proxies):
-    global sleep, site, uas, keyboard
+    global sleep, site, uas
     for prx in proxies:
         PROXY = prx['ip'] + ':' + prx['port']
         proxy = Proxy({
@@ -58,15 +59,12 @@ def func(proxies):
         driver.set_page_load_timeout(80)
         driver.get(site)
         time.sleep(5)
-        keyboard.type(prx['username'])
-        keyboard.press(Key.tab)
-        keyboard.release(Key.tab)
-        keyboard.type(prx['password'])
-        keyboard.press(Key.enter)
-        keyboard.release(Key.enter)
+        keyboard.write(prx['username'])
+        keyboard.send('tab')
+        keyboard.write(prx['password'])
+        keyboard.send('enter')
         time.sleep(10)
-        keyboard.press(Key.space)
-        keyboard.release(Key.space)
+        keyboard.send('space')
         time.sleep(sleep)
         driver.quit()
 
@@ -81,7 +79,6 @@ num_threads = int(input())
 all_proxies = []
 display = Display(visible=0, size=(800, 600))
 display.start()
-keyboard = Controller()
 with open('proxies.csv') as file:
     reader = csv.reader(file, delimiter=';')
     for proxy in reader:
