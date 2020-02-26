@@ -1,3 +1,6 @@
+from pyvirtualdisplay import Display
+display = Display(visible=0, size=(800, 600))
+display.start()
 import time
 import random
 import csv
@@ -6,7 +9,6 @@ from selenium import webdriver
 from selenium.webdriver.common.proxy import Proxy, ProxyType
 from bs4 import BeautifulSoup
 import threading
-from pyvirtualdisplay import Display
 import pyautogui
 
 def LoadUserAgents(uafile):
@@ -75,8 +77,6 @@ sleep = int(input())
 print('Please enter number of threads') 
 num_threads = int(input())
 all_proxies = []
-display = Display(visible=0, size=(800, 600))
-display.start()
 with open('proxies.csv') as file:
     reader = csv.reader(file, delimiter=';')
     for proxy in reader:
