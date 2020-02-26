@@ -72,7 +72,6 @@ def func(proxies):
 
 
 uas = LoadUserAgents('ua.txt')
-keyboard = Controller()
 print('Please enter link to search: ')  
 site = input()
 print('Please enter watchtime') 
@@ -82,6 +81,7 @@ num_threads = int(input())
 all_proxies = []
 display = Display(visible=0, size=(800, 600))
 display.start()
+keyboard = Controller()
 with open('proxies.csv') as file:
     reader = csv.reader(file, delimiter=';')
     for proxy in reader:
