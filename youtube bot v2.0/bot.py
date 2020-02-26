@@ -7,9 +7,7 @@ from selenium.webdriver.common.proxy import Proxy, ProxyType
 from bs4 import BeautifulSoup
 import threading
 from pyvirtualdisplay import Display
-import keyboard
-
-
+import pyautogui
 
 def LoadUserAgents(uafile):
     uas = []
@@ -59,12 +57,12 @@ def func(proxies):
         driver.set_page_load_timeout(80)
         driver.get(site)
         time.sleep(5)
-        keyboard.write(prx['username'])
-        keyboard.send('tab')
-        keyboard.write(prx['password'])
-        keyboard.send('enter')
+        pyautogui.typewrite(prx['username'])
+        pyautogui.press('tab')
+        pyautogui.typewrite(prx['password'])
+        pyautogui.press('enter')
         time.sleep(10)
-        keyboard.send('space')
+        pyautogui.press('space')
         time.sleep(sleep)
         driver.quit()
 
