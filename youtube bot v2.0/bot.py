@@ -1,6 +1,3 @@
-from pyvirtualdisplay import Display
-display = Display(visible=0, size=(800, 600))
-display.start()
 import time
 import random
 import csv
@@ -9,21 +6,19 @@ from selenium import webdriver
 from selenium.webdriver.common.proxy import Proxy, ProxyType
 from bs4 import BeautifulSoup
 import threading
-import pyautogui
+import keyboard
 
 def LoadUserAgents(uafile):
     uas = []
-    with open(uafile, 'r') as uaf:
+    with open(uafile, 'rb') as uaf:
         for ua in uaf.readlines():
             uas.append(ua.strip())
     random.shuffle(uas)
     return uas
 
-
 def divide_chunks(l, n):
     for i in range(0, len(l), n):
         yield l[i:i + n]
-
 
 def func(proxies):
     global sleep, site, uas
@@ -59,16 +54,14 @@ def func(proxies):
         driver.set_page_load_timeout(80)
         driver.get(site)
         time.sleep(5)
-        pyautogui.typewrite(prx['username'])
-        pyautogui.press('tab')
-        pyautogui.typewrite(prx['password'])
-        pyautogui.press('enter')
+        keyboard.write(prx['username'])
+        keyboard.send('tab')
+        keyboard.write(prx['password'])
+        keyboard.send('enter')
         time.sleep(10)
-        pyautogui.press('space')
+        keyboard.send('space')
         time.sleep(sleep)
         driver.quit()
-
-
 uas = LoadUserAgents('ua.txt')
 print('Please enter link to search: ')  
 site = input()
@@ -93,4 +86,3 @@ for group_proxies in devided_proxies:
     some_thread.start()
 while threading.active_count() > 1:
     time.sleep(1)
-display.stop()
