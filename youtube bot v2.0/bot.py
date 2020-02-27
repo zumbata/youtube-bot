@@ -65,7 +65,7 @@ def func(proxies):
         keyboard.release(Key.space)
         time.sleep(sleep)
         driver.quit()
-
+        print(f"Viewed the video with proxy {PROXY} successfully!")
 
 uas = LoadUserAgents('ua.txt')
 keyboard = Controller()
