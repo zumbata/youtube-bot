@@ -94,5 +94,3 @@ devided_proxies = list(divide_chunks(all_proxies, int(len(all_proxies)
 for group_proxies in devided_proxies:
     some_thread = threading.Thread(target=func, args=(group_proxies, ))
     some_thread.start()
-while threading.active_count() > 1:
-    time.sleep(1)
