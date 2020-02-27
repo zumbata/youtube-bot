@@ -65,15 +65,15 @@ def func(proxies):
 
 uas = LoadUserAgents('ua.txt')
 keyboard = Controller()
-# print('Please enter link to search: ')  
-# site = input()
-site = "https://www.youtube.com/watch?v=4beKpdNqThw"
-# print('Please enter watchtime') 
-# sleep = int(input())
-sleep = 30
-# print('Please enter number of threads') 
-# num_threads = int(input())
-num_threads = 1
+print('Please enter link to search: ')  
+site = input()
+# site = "https://www.youtube.com/watch?v=4beKpdNqThw"
+print('Please enter watchtime') 
+sleep = int(input())
+# sleep = 30
+print('Please enter number of threads') 
+num_threads = int(input())
+# num_threads = 1
 all_proxies = []
 with open('proxies.csv') as file:
     reader = csv.reader(file, delimiter=';')
