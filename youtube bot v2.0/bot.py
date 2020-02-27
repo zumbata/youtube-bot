@@ -1,11 +1,10 @@
 import time
 import random
 import csv
-import requests
 from selenium.webdriver.common.by import By
 from selenium import webdriver
 from selenium.webdriver.common.proxy import Proxy, ProxyType
-from bs4 import BeautifulSoup
+from selenium.webdriver.firefox.options import Options
 import threading
 
 def LoadUserAgents(uafile):
@@ -21,16 +20,11 @@ def divide_chunks(l, n):
         yield l[i:i + n]
 
 def func(proxies):
-    global sleep, site, uas
+    global sleep_min, sleep_max, site, uas
     for prx in proxies:
         PROXY = prx['ip'] + ':' + prx['port']
-        proxy = Proxy({
-            'proxyType': ProxyType.MANUAL,
-            'httpProxy': PROXY,
-            'ftpProxy': PROXY,
-            'sslProxy': PROXY,
-            'noProxy': '',
-        })
+        options = Options()
+        options.headless = True
         firefox_capabilities = webdriver.DesiredCapabilities.FIREFOX
         firefox_capabilities['marionette'] = True
         firefox_capabilities['proxy'] = {
@@ -38,41 +32,53 @@ def func(proxies):
             'httpProxy': PROXY,
             'ftpProxy': PROXY,
             'sslProxy': PROXY,
-            }
+        }
         profile = webdriver.FirefoxProfile()
-        profile.set_preference('general.useragent.override',
-                               random.choice(uas))
-        profile.set_preference('network.proxy.type', 1)
-        profile.set_preference('network.proxy.http', prx['ip'])
-        profile.set_preference('network.proxy.http_port', prx['port'])
-        profile.set_preference('network.proxy.ssl', prx['ip'])
-        profile.set_preference('network.proxy.ssl_port', prx['port'])
-        profile.update_preferences()
+        profile.set_preference('general.useragent.override', random.choice(uas))
         try:
-            driver = webdriver.Firefox(firefox_profile=profile,proxy=proxy,capabilities=firefox_capabilities)
+            driver = webdriver.Firefox(firefox_profile=profile, options=options, capabilities=firefox_capabilities)
         except:
+            print(f"Skipped watching video with proxy {PROXY} because of error in the driver")
+            try:
+                driver.quit()
+            except:
+                pass
             continue
         driver.set_page_load_timeout(20)
+        driver.implicitly_wait(20)
         driver.get(site)
-        time.sleep(5)
-        play = driver.find_element(By.CSS_SELECTOR, '.ytp-play-button')
+        try:
+            play = driver.find_element(By.CSS_SELECTOR, '.ytp-play-button')
+        except:
+            print(f"Skipped watching video with proxy {PROXY} because of error in the the play button")
+            driver.quit()
+            continue
         text = play.get_attribute('title')
         if (text.find('Play') != -1):
-            play.click()
-        time.sleep(sleep)
+            try:
+                play.click()
+            except:
+                print(f"Skipped watching video with proxy {PROXY} because of error in the the play button")
+                driver.quit()
+                continue
+        time.sleep(random.uniform(sleep_min, sleep_max))
         driver.quit()
         print(f"Viewed the video with proxy {PROXY} successfully!")
 
 uas = LoadUserAgents('ua.txt')
 print('Please enter link to search: ')  
 site = input()
-# site = "https://www.youtube.com/watch?v=4beKpdNqThw"
-print('Please enter watchtime') 
-sleep = int(input())
-# sleep = 30
+print('Please enter min watchtime') 
+sleep_min = int(input())
+print('Please enter max watchtime') 
+sleep_max = int(input())
 print('Please enter number of threads') 
 num_threads = int(input())
+# site = "https://www.youtube.com/watch?v=4beKpdNqThw"
+# sleep_min = 20
+# sleep_max = 25
 # num_threads = 1
+
 all_proxies = []
 with open('proxies.csv') as file:
     reader = csv.reader(file, delimiter=';')
