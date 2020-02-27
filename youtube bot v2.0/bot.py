@@ -2,6 +2,7 @@ import time
 import random
 import csv
 import requests
+from selenium.webdriver.common.by import By
 from selenium import webdriver
 from selenium.webdriver.common.proxy import Proxy, ProxyType
 from pynput.keyboard import Key, Controller
@@ -30,7 +31,7 @@ def func(proxies):
             'ftpProxy': PROXY,
             'sslProxy': PROXY,
             'noProxy': '',
-            })
+        })
         firefox_capabilities = webdriver.DesiredCapabilities.FIREFOX
         firefox_capabilities['marionette'] = True
         firefox_capabilities['proxy'] = {
@@ -51,30 +52,28 @@ def func(proxies):
         driver = webdriver.Firefox(firefox_profile=profile,
                                    proxy=proxy,
                                    capabilities=firefox_capabilities)
-        driver.set_page_load_timeout(80)
+        driver.set_page_load_timeout(20)
         driver.get(site)
         time.sleep(5)
-        keyboard.type(prx['username'])
-        keyboard.press(Key.tab)
-        keyboard.release(Key.tab)
-        keyboard.type(prx['password'])
-        keyboard.press(Key.enter)
-        keyboard.release(Key.enter)
-        time.sleep(10)
-        keyboard.press(Key.space)
-        keyboard.release(Key.space)
+        play = driver.find_element(By.CSS_SELECTOR, '.ytp-play-button')
+        text = play.get_attribute('title')
+        if (text.find('Play') != -1):
+            play.click()
         time.sleep(sleep)
         driver.quit()
-
+        print(f"Viewed the video with proxy {PROXY} successfully!")
 
 uas = LoadUserAgents('ua.txt')
 keyboard = Controller()
-print('Please enter link to search: ')  
-site = input()
-print('Please enter watchtime') 
-sleep = int(input())
-print('Please enter number of threads') 
-num_threads = int(input())
+# print('Please enter link to search: ')  
+# site = input()
+site = "https://www.youtube.com/watch?v=4beKpdNqThw"
+# print('Please enter watchtime') 
+# sleep = int(input())
+sleep = 30
+# print('Please enter number of threads') 
+# num_threads = int(input())
+num_threads = 1
 all_proxies = []
 with open('proxies.csv') as file:
     reader = csv.reader(file, delimiter=';')
