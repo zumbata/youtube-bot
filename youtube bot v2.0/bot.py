@@ -48,9 +48,10 @@ def func(proxies):
         profile.set_preference('network.proxy.ssl', prx['ip'])
         profile.set_preference('network.proxy.ssl_port', prx['port'])
         profile.update_preferences()
-        driver = webdriver.Firefox(firefox_profile=profile,
-                                   proxy=proxy,
-                                   capabilities=firefox_capabilities)
+        try:
+            driver = webdriver.Firefox(firefox_profile=profile,proxy=proxy,capabilities=firefox_capabilities)
+        except:
+            continue
         driver.set_page_load_timeout(20)
         driver.get(site)
         time.sleep(5)
