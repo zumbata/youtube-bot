@@ -7,22 +7,18 @@ from selenium.webdriver.common.proxy import Proxy, ProxyType
 from pynput.keyboard import Key, Controller
 from bs4 import BeautifulSoup
 import threading
-from pyvirtualdisplay import Display
-
 
 def LoadUserAgents(uafile):
     uas = []
-    with open(uafile, 'rb') as uaf:
+    with open(uafile, 'r') as uaf:
         for ua in uaf.readlines():
             uas.append(ua.strip())
     random.shuffle(uas)
     return uas
 
-
 def divide_chunks(l, n):
     for i in range(0, len(l), n):
         yield l[i:i + n]
-
 
 def func(proxies):
     global sleep, site, uas, keyboard
@@ -70,7 +66,6 @@ def func(proxies):
         time.sleep(sleep)
         driver.quit()
 
-
 uas = LoadUserAgents('ua.txt')
 keyboard = Controller()
 print('Please enter link to search: ')  
@@ -80,8 +75,6 @@ sleep = int(input())
 print('Please enter number of threads') 
 num_threads = int(input())
 all_proxies = []
-display = Display(visible=0, size=(800, 600))
-display.start()
 with open('proxies.csv') as file:
     reader = csv.reader(file, delimiter=';')
     for proxy in reader:
@@ -98,4 +91,3 @@ for group_proxies in devided_proxies:
     some_thread.start()
 while threading.active_count() > 1:
     time.sleep(1)
-display.stop()
