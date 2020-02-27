@@ -5,7 +5,6 @@ import requests
 from selenium.webdriver.common.by import By
 from selenium import webdriver
 from selenium.webdriver.common.proxy import Proxy, ProxyType
-from pynput.keyboard import Key, Controller
 from bs4 import BeautifulSoup
 import threading
 
@@ -22,7 +21,7 @@ def divide_chunks(l, n):
         yield l[i:i + n]
 
 def func(proxies):
-    global sleep, site, uas, keyboard
+    global sleep, site, uas
     for prx in proxies:
         PROXY = prx['ip'] + ':' + prx['port']
         proxy = Proxy({
@@ -64,7 +63,6 @@ def func(proxies):
         print(f"Viewed the video with proxy {PROXY} successfully!")
 
 uas = LoadUserAgents('ua.txt')
-keyboard = Controller()
 print('Please enter link to search: ')  
 site = input()
 # site = "https://www.youtube.com/watch?v=4beKpdNqThw"
