@@ -66,6 +66,7 @@ def func(proxies):
         time.sleep(sleep)
         driver.quit()
 
+
 uas = LoadUserAgents('ua.txt')
 keyboard = Controller()
 print('Please enter link to search: ')  
