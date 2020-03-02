@@ -1,0 +1,1 @@
+<!-- <div id="copyright text-center">© Copyright 2013 Scotchy Scotch Scotch</div> -->
