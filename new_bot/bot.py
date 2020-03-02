@@ -42,7 +42,6 @@ def func(proxies):
 		try:
 			driver = webdriver.Firefox(firefox_profile=profile, options=options, capabilities=firefox_capabilities)
 		except:
-			print(f"Skipped watching video with proxy {PROXY} because of error in the driver")
 			try:
 				driver.quit()
 			except:
@@ -55,7 +54,6 @@ def func(proxies):
 			driver.find_element(By.CSS_SELECTOR, 'input#search').send_keys(random.choice(keywords))
 			driver.find_element(By.CSS_SELECTOR, 'input#search').send_keys(Keys.RETURN)
 		except:
-			print(f"Skipped watching video with proxy {PROXY} because of error in the the search")
 			driver.quit()
 			continue
 		flag = False
@@ -75,7 +73,6 @@ def func(proxies):
 		try:
 			play = driver.find_element(By.CSS_SELECTOR, '.ytp-play-button')
 		except:
-			print(f"Skipped watching video with proxy {PROXY} because of error in the the play button")
 			driver.quit()
 			continue
 		text = play.get_attribute('title')
@@ -83,7 +80,6 @@ def func(proxies):
 			try:
 				play.click()
 			except:
-				print(f"Skipped watching video with proxy {PROXY} because of error in the the play button")
 				driver.quit()
 				continue
 		time.sleep(random.uniform(sleep_min, sleep_max))
@@ -92,7 +88,6 @@ def func(proxies):
 		driver.find_element(By.CSS_SELECTOR, 'ytd-compact-video-renderer.style-scope:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > a:nth-child(1)').click()
 		time.sleep(random.uniform(5, 10))
 		driver.quit()
-		print(f"Viewed the video with proxy {PROXY} successfully!")
 
 uas = LoadUserAgents(f'{os.path.dirname(os.path.realpath(__file__))}/ua.txt')
 data = json.loads(base64.b64decode(sys.argv[1]))
