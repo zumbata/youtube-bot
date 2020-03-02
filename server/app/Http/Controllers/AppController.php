@@ -20,9 +20,9 @@ class AppController extends Controller
             "max_time" => $request->input('max_time')
         ]));
         // dont wait for it
-        // shell_exec("python3 ../../{$bot}/bot.py {$encryped} > /var/log/custom_server_log/log.log 2>&1 &");
+        shell_exec("python3 ../../{$bot}/bot.py {$encryped} > /var/log/custom.log 2>&1 &");
         //wait for it
-        shell_exec("python3 ../../{$bot}/bot.py {$encryped}");
+        // shell_exec("python3 ../../{$bot}/bot.py {$encryped}");
         return view('admin_start_bot', ['success' => true]);
     }
 
