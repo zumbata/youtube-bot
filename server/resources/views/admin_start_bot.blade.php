@@ -20,7 +20,7 @@
             <div id="for_old">
                 <label>Google Accounts</label>
                 <br><hr>
-                <textarea rows="10" style="width: 100%;" name="accounts"></textarea><br>
+                <textarea rows="10" style="width: 50%; margin: 0 auto;" name="accounts"></textarea><br>
                 <pre>
 Paste the accounts in the following format:
 email;password;recovery_email;comment
@@ -36,7 +36,7 @@ a123sdasd@gmail.com;asdasd;asd543@gmail.com;1
                 <br>
                 <label>Comments</label>
                 <br><hr>
-                <textarea rows="10" style="width: 100%;" name="comments"></textarea><br>
+                <textarea rows="10" style="width: 50%; margin: 0 auto;" name="comments"></textarea><br>
                 <pre>
 Paste the comments in the following format:
 comment
@@ -52,7 +52,7 @@ this is third example comment
             </div>
             <label>Proxies</label>
             <br><hr>
-            <textarea rows="10" style="width: 100%;" name="proxies"></textarea><br>
+            <textarea rows="10" style="width: 50%; margin: 0 auto;" name="proxies"></textarea><br>
             <pre>
 Paste the proxies in the following format:
 ip:port
@@ -68,7 +68,7 @@ example:
             <br>
             <label>Keywords</label>
             <br><hr>
-            <textarea rows="10" style="width: 100%;" name="keywords"></textarea><br>
+            <textarea rows="10" style="width: 50%; margin: 0 auto;" name="keywords"></textarea><br>
             <pre>
 Paste the keywords in the following format:
 keyword
@@ -83,7 +83,19 @@ this is third example keyword
             <br>
             <label>Video</label>
             <br><hr>
-            <input style="width: 100%;" type="text" name="video">
+            <input style="width: 50%; margin: 0 auto;" type="text" name="video">
+            <br><br>
+            <label>Number of threads</label>
+            <br><hr>
+            <input style="width: 50%; margin: 0 auto;" type="number" name="threads">
+            <br><br>
+            <label>MIN watchtime</label>
+            <br><hr>
+            <input style="width: 50%; margin: 0 auto;" type="number" name="min_time">
+            <br><br>
+            <label>MAX watchtime</label>
+            <br><hr>
+            <input style="width: 50%; margin: 0 auto;" type="number" name="max_time">
             <br><br><br>
             <input type="submit" value="Start the bot">
         </form>

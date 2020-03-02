@@ -8,11 +8,21 @@ class AppController extends Controller
 {
     public function startBot(Request $request)
     {
-        $bot = ""; // get from requests
+        $bot = ($request->input('bot') == "new") ? "new_bot" : "old_bot";
         $encryped = base64_encode(json_encode([
-            //data
+            "accounts" => $request->input('accounts'),
+            "comments" => $request->input('comments'),
+            "proxies" => $request->input('proxies'),
+            "keywords" => $request->input('keywords'),
+            "video" => $request->input('video'),
+            "threads" => $request->input('threads'),
+            "min_time" => $request->input('min_time'),
+            "max_time" => $request->input('max_time')
         ]));
-        shell_exec("python3 ../{$bot} {$encryped} >/dev/null 2>/dev/null &");
+        // dont wait for it
+        // shell_exec("python3 ../../{$bot}/bot.py {$encryped} > /var/log/custom_server_log/log.log 2>&1 &");
+        //wait for it
+        shell_exec("python3 ../../{$bot}/bot.py {$encryped}");
         return view('admin_start_bot', ['success' => true]);
     }
 
