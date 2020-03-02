@@ -42,7 +42,6 @@ def func(proxies):
 		try:
 			driver = webdriver.Firefox(firefox_profile=profile, options=options, capabilities=firefox_capabilities)
 		except:
-			print(f"Skipped watching video with proxy {PROXY} because of error in the driver")
 			try:
 				driver.quit()
 			except:
@@ -55,7 +54,6 @@ def func(proxies):
 			driver.find_element(By.CSS_SELECTOR, 'input#search').send_keys(random.choice(keywords))
 			driver.find_element(By.CSS_SELECTOR, 'input#search').send_keys(Keys.RETURN)
 		except:
-			print(f"Skipped watching video with proxy {PROXY} because of error in the the search")
 			driver.quit()
 			continue
 		flag = False
@@ -76,7 +74,6 @@ def func(proxies):
 		try:
 			play = driver.find_element(By.CSS_SELECTOR, '.ytp-play-button')
 		except:
-			print(f"Skipped watching video with proxy {PROXY} because of error in the the play button")
 			driver.quit()
 			continue
 		text = play.get_attribute('title')
@@ -84,7 +81,6 @@ def func(proxies):
 			try:
 				play.click()
 			except:
-				print(f"Skipped watching video with proxy {PROXY} because of error in the the play button")
 				driver.quit()
 				continue
 		time.sleep(random.uniform(sleep_min, sleep_max))
