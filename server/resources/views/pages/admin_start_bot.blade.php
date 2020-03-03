@@ -1,7 +1,7 @@
 @extends('layouts.default', ['title' => 'Choose Bot'])
 @section('content')
     <div class="row justify-content-center text-center">
-        <div class="mt-5 rounded-pill col-6 col-color">
+        <div class="col-6 card card-signin my-5">
             <h3 class="mt-2">Choose which bot to operate</h3>
             @if(isset($success) && $success == true)
             <p class="text-success">Bot started successfully.</p>
