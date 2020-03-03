@@ -88,8 +88,21 @@ this is third example keyword"></textarea>
                     </div>
                 </div>
             </div>
+            <div class="form-row text-left">
+                <div class="col">
+                    <div class="form-label-group">
+                        <input type="text" class="form-control" id="video" name="video">
+                        <label for="video">Link to Video</label>
+                    </div>
+                </div>
+            </div>
+            @if($bot == 'old')
+            <input type="hidden" value="old" name="bot">
+            @else
+            <input type="hidden" value="new" name="bot">
+            @endif
             <div class="form-group py-4">
-               <button class="btn btn-lg btn-primary btn-block text-uppercase w-50 mx-auto" type="submit">Start</button>
+               <button class="btn btn-lg btn-primary btn-block text-uppercase w-50 mx-auto" value="submit" type="submit">Start</button>
             </div>
         </form>
     </div>
