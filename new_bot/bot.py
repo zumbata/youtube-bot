@@ -5,7 +5,6 @@ import threading
 import base64
 import os
 import sys
-import subprocess
 from selenium.webdriver.common.by import By
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
@@ -43,6 +42,7 @@ def func(proxies):
 			driver = webdriver.Firefox(firefox_profile=profile, options=options, capabilities=firefox_capabilities)
 		except:
 			try:
+				print(f"Exception occured in line {sys._getframe().f_lineno}")
 				driver.quit()
 			except:
 				pass
@@ -54,6 +54,7 @@ def func(proxies):
 			driver.find_element(By.CSS_SELECTOR, 'input#search').send_keys(random.choice(keywords))
 			driver.find_element(By.CSS_SELECTOR, 'input#search').send_keys(Keys.RETURN)
 		except:
+			print(f"Exception occured in line {sys._getframe().f_lineno}")
 			driver.quit()
 			continue
 		flag = False
@@ -61,7 +62,7 @@ def func(proxies):
 			try:
 				link = driver.find_element(By.CSS_SELECTOR, 'ytd-video-renderer.ytd-item-section-renderer:nth-child({}) > div:nth-child(1) > ytd-thumbnail:nth-child(1) > a'.format(str(x)))
 			except:
-				print(f"Skipped watching video with proxy {PROXY} because of error in the the play button")
+				print(f"Exception occured in line {sys._getframe().f_lineno}")
 				continue
 			driver.execute_script('arguments[0].scrollIntoView();', link)
 			href = link.get_attribute('href')
@@ -74,6 +75,7 @@ def func(proxies):
 		try:
 			play = driver.find_element(By.CSS_SELECTOR, '.ytp-play-button')
 		except:
+			print(f"Exception occured in line {sys._getframe().f_lineno}")
 			driver.quit()
 			continue
 		text = play.get_attribute('title')
@@ -81,6 +83,7 @@ def func(proxies):
 			try:
 				play.click()
 			except:
+				print(f"Exception occured in line {sys._getframe().f_lineno}")
 				driver.quit()
 				continue
 		time.sleep(random.uniform(sleep_min, sleep_max))
