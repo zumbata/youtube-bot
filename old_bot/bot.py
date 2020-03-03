@@ -12,7 +12,6 @@ from time import sleep
 from random import uniform
 from random import choice
 from datetime import datetime
-from pyvirtualdisplay import Display
 
 
 def wait(x, y):
@@ -42,9 +41,6 @@ def mydriver():
 # def switchIP():
 # 	os.system("expressvpn disconnect")
 # 	os.system("expressvpn connect smart")
-
-display = Display(size=(800, 600))
-display.start()
 
 accounts = []
 keywords = []
@@ -142,5 +138,4 @@ for account in accounts:
 	total_seconds = pt.second + pt.minute*60 + pt.hour * 3600
 	wait(total_seconds * 0.05, total_seconds * 0.1)
 	driver.quit()
-	display.stop()
 	print("Done. Proceeding with the nex one.")
