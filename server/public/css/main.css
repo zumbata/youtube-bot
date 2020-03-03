@@ -3,7 +3,9 @@
     --input-padding-y: .75rem;
 }
 
-.form-label-group {
+@media (min-width: 1025px) {
+  
+  .form-label-group {
     position: relative;
     margin-bottom: 1rem;
   }
@@ -65,45 +67,51 @@
     color: #777;
   }
   
-  .btn-google {
-    color: white;
-    background-color: #ea4335;
+}
+  
+.btn-google {
+  color: white;
+  background-color: #ea4335;
+}
+
+.btn-facebook {
+  color: white;
+  background-color: #3b5998;
+}
+
+/* Fallback for Edge
+-------------------------------------------------- */
+
+@supports (-ms-ime-align: auto) {
+  .form-label-group>label {
+    display: none;
   }
-  
-  .btn-facebook {
-    color: white;
-    background-color: #3b5998;
+  .form-label-group input::-ms-input-placeholder {
+    color: #777;
   }
-  
-  /* Fallback for Edge
-  -------------------------------------------------- */
-  
-  @supports (-ms-ime-align: auto) {
-    .form-label-group>label {
-      display: none;
-    }
-    .form-label-group input::-ms-input-placeholder {
-      color: #777;
-    }
+}
+
+/* Fallback for IE
+-------------------------------------------------- */
+
+@media all and (-ms-high-contrast: none),
+(-ms-high-contrast: active) {
+  .form-label-group>label {
+    display: none;
   }
-  
-  /* Fallback for IE
-  -------------------------------------------------- */
-  
-  @media all and (-ms-high-contrast: none),
-  (-ms-high-contrast: active) {
-    .form-label-group>label {
-      display: none;
-    }
-    .form-label-group input:-ms-input-placeholder {
-      color: #777;
-    }
+  .form-label-group input:-ms-input-placeholder {
+    color: #777;
   }
-  
+}
+
 .col-color {
-    background: rgb(230, 230, 230);
+  background: rgb(230, 230, 230);
 }
 
 .navbar-custom { 
-    background: rgb(18, 151, 204);
+  background: #1297cc;
+}
+
+body {
+  background: linear-gradient(to bottom, #1297cc 10%, #124dcc);
 }

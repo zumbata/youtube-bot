@@ -1,5 +1,5 @@
 @extends('layouts.default', ['title' => 'Start Bot']) @section('content')
-<div class="col-color rounded mt-5">
+<div class="card card-signin my-5">
 
     <div class="pt-3 text-center mx-5">
         <h2>Start Bot</h2>
