@@ -1,6 +1,7 @@
 import time
 import random
 import json
+import math
 import threading
 import base64
 import os
@@ -23,7 +24,7 @@ def divide_chunks(l, n):
 		yield l[i:i + n]
 
 def func(proxies):
-	global sleep_min, sleep_max, site, uas, keywords
+	global sleep_min, sleep_max, site, keywords#, uas
 	for prx in proxies:
 		PROXY = prx['ip'] + ':' + prx['port']
 		options = Options()
@@ -36,10 +37,10 @@ def func(proxies):
 			'ftpProxy': PROXY,
 			'sslProxy': PROXY,
 		}
-		profile = webdriver.FirefoxProfile()
-		profile.set_preference('general.useragent.override', random.choice(uas))
+		# profile = webdriver.FirefoxProfile()
+		# profile.set_preference('general.useragent.override', random.choice(uas))
 		try:
-			driver = webdriver.Firefox(firefox_profile=profile, options=options, capabilities=firefox_capabilities)
+			driver = webdriver.Firefox(options=options, capabilities=firefox_capabilities) #firefox_profile=profile, 
 		except:
 			try:
 				print(f"Exception occured in line {sys._getframe().f_lineno}")
@@ -47,12 +48,14 @@ def func(proxies):
 			except:
 				pass
 			continue
-		driver.set_page_load_timeout(20)
-		driver.implicitly_wait(20)
+		driver.set_page_load_timeout(10)
+		driver.implicitly_wait(10)
 		driver.get('https://youtube.com/')
 		try:
-			driver.find_element(By.CSS_SELECTOR, 'input#search').send_keys(random.choice(keywords))
-			driver.find_element(By.CSS_SELECTOR, 'input#search').send_keys(Keys.RETURN)
+			search = driver.find_element(By.CSS_SELECTOR, 'input#search')
+			button = driver.find_element(By.CSS_SELECTOR, '#search-icon-legacy')
+			driver.execute_script(f'arguments[0].value = "{random.choice(keywords)}";', search)
+			driver.execute_script(f'arguments[0].click();', button)
 		except:
 			print(f"Exception occured in line {sys._getframe().f_lineno}")
 			driver.quit()
@@ -67,7 +70,7 @@ def func(proxies):
 			driver.execute_script('arguments[0].scrollIntoView();', link)
 			href = link.get_attribute('href')
 			if href in site :
-				link.click()
+				driver.execute_script(f'arguments[0].click();', link)
 				flag = True
 				break
 		if flag == False:
@@ -81,20 +84,22 @@ def func(proxies):
 		text = play.get_attribute('title')
 		if (text.find('Play') != -1):
 			try:
-				play.click()
+				driver.execute_script('arguments[0].click();', play)
 			except:
 				print(f"Exception occured in line {sys._getframe().f_lineno}")
 				driver.quit()
 				continue
 		time.sleep(random.uniform(sleep_min, sleep_max))
-		driver.find_element(By.CSS_SELECTOR, 'ytd-compact-video-renderer.style-scope:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > a:nth-child(1)').click()
-		time.sleep(random.uniform(10, 20))
-		driver.find_element(By.CSS_SELECTOR, 'ytd-compact-video-renderer.style-scope:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > a:nth-child(1)').click()
+		element = driver.find_element(By.CSS_SELECTOR, 'ytd-compact-video-renderer.style-scope:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > a:nth-child(1)')
+		driver.execute_script('arguments[0].click();', element)
+		time.sleep(random.uniform(5, 10))
+		element = driver.find_element(By.CSS_SELECTOR, 'ytd-compact-video-renderer.style-scope:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > a:nth-child(1)')
+		driver.execute_script('arguments[0].click();', element)
 		time.sleep(random.uniform(5, 10))
 		print(f"Viewed the video with proxy {PROXY} successfully!")
 		driver.quit()
 
-uas = LoadUserAgents(f'{os.path.dirname(os.path.realpath(__file__))}/ua.txt')
+# uas = LoadUserAgents(f'{os.path.dirname(os.path.realpath(__file__))}/ua.txt')
 data = json.loads(base64.b64decode(sys.argv[1]))
 # data = {
 # 	'video' : 'https://www.youtube.com/watch?v=pRKqlw0DaDI',
@@ -113,9 +118,9 @@ proxies = data['proxies'].split()
 for proxy in proxies:
 	proxy_splited = proxy.split(':')
 	all_proxies.append({'ip' : proxy_splited[0], 'port' : proxy_splited[1]})
-keywords = data['keywords'].split('\n')
+keywords = [x.strip('\t').strip('\n').strip() for x in data['keywords'].split('\n')]
 
-devided_proxies = list(divide_chunks(all_proxies, int(len(all_proxies) / num_threads)))
+devided_proxies = list(divide_chunks(all_proxies, math.floor(len(all_proxies) / num_threads)))
 for group_proxies in devided_proxies:
 	some_thread = threading.Thread(target=func, args=(group_proxies, ))
 	some_thread.start()
