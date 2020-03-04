@@ -28,7 +28,7 @@ def func(proxies):
 	for prx in proxies:
 		PROXY = prx['ip'] + ':' + prx['port']
 		options = Options()
-		# options.headless = True
+		options.headless = True
 		firefox_capabilities = webdriver.DesiredCapabilities.FIREFOX
 		firefox_capabilities['marionette'] = True
 		firefox_capabilities['proxy'] = {
