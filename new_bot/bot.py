@@ -39,15 +39,15 @@ def func(proxies):
 		}
 		# profile = webdriver.FirefoxProfile()
 		# profile.set_preference('general.useragent.override', random.choice(uas))
-		try:
-			driver = webdriver.Firefox(options=options, capabilities=firefox_capabilities) #firefox_profile=profile, 
-		except:
-			try:
-				print(f"Exception occured in line {sys._getframe().f_lineno}")
-				driver.quit()
-			except:
-				pass
-			continue
+		# try:
+		driver = webdriver.Firefox(options=options, capabilities=firefox_capabilities) #firefox_profile=profile, 
+		# except:
+		# 	try:
+		# 		print(f"Exception occured in line {sys._getframe().f_lineno}")
+		# 		driver.quit()
+		# 	except:
+		# 		pass
+		# 	continue
 		driver.set_page_load_timeout(10)
 		driver.implicitly_wait(10)
 		driver.get('https://youtube.com/')
