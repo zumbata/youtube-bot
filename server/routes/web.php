@@ -58,6 +58,10 @@ Route::get('/admin/log', function (){
     return file_get_contents('/var/log/custom.log');
 });
 
+Route::get('/admin/geckodriver_log', function (){
+    return file_get_contents('/var/log/geckodriver.log');
+});
+
 Route::post('/admin/login', "AppController@login");
 Route::post('/admin/bots', "AppController@bots");
 Route::get('/admin/logout', "AppController@logout");
