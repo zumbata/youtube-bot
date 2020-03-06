@@ -6,6 +6,7 @@ import threading
 import base64
 import os
 import sys
+from datetime import datetime
 from selenium.webdriver.common.by import By
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
@@ -43,7 +44,7 @@ def func(proxies):
 			driver = webdriver.Firefox(options=options, capabilities=firefox_capabilities, log_path='/var/log/geckodriver.log') #firefox_profile=profile, 
 		except:
 			try:
-				print(f"Exception occured in line {sys._getframe().f_lineno}")
+				print(f"{datetime.now().strftime('%H:%M:%S')} : Exception occured in line {sys._getframe().f_lineno}")
 				driver.quit()
 			except:
 				pass
@@ -57,7 +58,7 @@ def func(proxies):
 			driver.execute_script(f'arguments[0].value = "{random.choice(keywords)}";', search)
 			driver.execute_script(f'arguments[0].click();', button)
 		except:
-			print(f"Exception occured in line {sys._getframe().f_lineno}")
+			print(f"{datetime.now().strftime('%H:%M:%S')} : Exception occured in line {sys._getframe().f_lineno}")
 			driver.quit()
 			continue
 		flag = False
@@ -65,7 +66,7 @@ def func(proxies):
 			try:
 				link = driver.find_element(By.CSS_SELECTOR, 'ytd-video-renderer.ytd-item-section-renderer:nth-child({}) > div:nth-child(1) > ytd-thumbnail:nth-child(1) > a'.format(str(x)))
 			except:
-				print(f"Exception occured in line {sys._getframe().f_lineno}")
+				print(f"{datetime.now().strftime('%H:%M:%S')} : Exception occured in line {sys._getframe().f_lineno}")
 				continue
 			driver.execute_script('arguments[0].scrollIntoView();', link)
 			href = link.get_attribute('href')
@@ -78,7 +79,7 @@ def func(proxies):
 		try:
 			play = driver.find_element(By.CSS_SELECTOR, '.ytp-play-button')
 		except:
-			print(f"Exception occured in line {sys._getframe().f_lineno}")
+			print(f"{datetime.now().strftime('%H:%M:%S')} : Exception occured in line {sys._getframe().f_lineno}")
 			driver.quit()
 			continue
 		text = play.get_attribute('title')
@@ -86,7 +87,7 @@ def func(proxies):
 			try:
 				driver.execute_script('arguments[0].click();', play)
 			except:
-				print(f"Exception occured in line {sys._getframe().f_lineno}")
+				print(f"{datetime.now().strftime('%H:%M:%S')} : Exception occured in line {sys._getframe().f_lineno}")
 				driver.quit()
 				continue
 		time.sleep(random.uniform(sleep_min, sleep_max))
@@ -96,7 +97,7 @@ def func(proxies):
 		element = driver.find_element(By.CSS_SELECTOR, 'ytd-compact-video-renderer.style-scope:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > a:nth-child(1)')
 		driver.execute_script('arguments[0].click();', element)
 		time.sleep(random.uniform(5, 10))
-		print(f"Viewed the video with proxy {PROXY} successfully!")
+		print(f"{datetime.now().strftime('%H:%M:%S')} : Viewed the video with proxy {PROXY} successfully!")
 		driver.quit()
 
 # uas = LoadUserAgents(f'{os.path.dirname(os.path.realpath(__file__))}/ua.txt')
