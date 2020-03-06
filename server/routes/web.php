@@ -54,12 +54,17 @@ Route::get('/admin/bots', function (Request $request) {
     return view('pages.admin_start_bot');
 });
 
-Route::get('/admin/log', function (){
-    return file_get_contents('/var/log/custom.log');
-});
-
-Route::get('/admin/geckodriver_log', function (){
-    return file_get_contents('/var/log/geckodriver.log');
+Route::get('/admin/log/{name}', function ($name){
+    $file_to_open = ($name == 'bot') ? '/var/log/custom.log' : '/var/log/geckodriver.log';
+    $lines = [];
+    if ($fh = fopen($file_to_open, 'r')) {
+        while (!feof($fh)) {
+            $line = fgets($fh);
+            $lines[] = $line;
+        }
+        fclose($fh);
+    }
+    return view('pages.admin_log', ['log' => $lines]);
 });
 
 Route::post('/admin/login', "AppController@login");
