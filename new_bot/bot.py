@@ -47,6 +47,7 @@ def func(proxies):
 				print(f"{datetime.now().strftime('%H:%M:%S')} : Exception occured in line {sys._getframe().f_lineno}")
 				driver.quit()
 			except:
+				print(f"{datetime.now().strftime('%H:%M:%S')} : Exception occured in line {sys._getframe().f_lineno}")
 				pass
 			continue
 		driver.set_page_load_timeout(10)
