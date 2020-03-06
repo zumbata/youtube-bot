@@ -64,7 +64,7 @@ Route::get('/admin/log/{name}', function ($name){
         }
         fclose($fh);
     }
-    return view('pages.admin_log', ['log' => $lines]);
+    return view('pages.admin_log', ['lines' => $lines]);
 });
 
 Route::post('/admin/login', "AppController@login");
