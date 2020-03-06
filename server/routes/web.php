@@ -53,6 +53,11 @@ Route::get('/admin/bots', function (Request $request) {
         return redirect('/admin/login');
     return view('pages.admin_start_bot');
 });
+
+Route::get('/admin/log', function (){
+    return file_get_contents('/var/log/custom.log');
+});
+
 Route::post('/admin/login', "AppController@login");
 Route::post('/admin/bots', "AppController@bots");
 Route::get('/admin/logout', "AppController@logout");
