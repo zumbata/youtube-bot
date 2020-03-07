@@ -52,7 +52,12 @@ def func(proxies):
 		# 	continue
 		driver.set_page_load_timeout(10)
 		driver.implicitly_wait(10)
-		driver.get('https://youtube.com/')
+		try:
+			driver.get('https://youtube.com/')
+		except:
+			print(f"{datetime.now().strftime('%H:%M:%S')} : Exception occured in line {sys._getframe().f_lineno}")
+			driver.quit()
+			continue
 		try:
 			search = driver.find_element(By.CSS_SELECTOR, 'input#search')
 			button = driver.find_element(By.CSS_SELECTOR, '#search-icon-legacy')

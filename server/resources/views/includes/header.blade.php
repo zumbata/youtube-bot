@@ -8,6 +8,7 @@
       <a class="nav-item nav-link" href="/admin">Home</a>
       @if(Session::has('isAdminLogged'))
       <a class="nav-item nav-link" href="/admin/logout">Logout</a>
+      <a class="nav-item nav-link" href="/admin/bots/stop">Stop All Bots</a>
       <a class="nav-item nav-link" href="/admin/log/bot">Bot Log</a>
       <a class="nav-item nav-link" href="/admin/log/driver">Geckodriver Log</a>
       @else

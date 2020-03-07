@@ -6,6 +6,35 @@ use Illuminate\Http\Request;
 
 class AppController extends Controller
 {
+    public function log($name)
+    {
+        $file_to_open = ($name == 'bot') ? '/var/log/custom.log' : '/var/log/geckodriver.log';
+        $lines = [];
+        if ($fh = fopen($file_to_open, 'r')) {
+            while (!feof($fh)) {
+                $line = fgets($fh);
+                $lines[] = $line;
+            }
+            fclose($fh);
+        }
+        return view('pages.admin_log', ['lines' => $lines, 'log' => $name]);
+    }
+
+    public function clearLog($name)
+    {
+        $file = ($name == "driver") ? "geckodriver.log" : "custom.log";
+        shell_exec(">/var/log/{$file}");
+        return redirect("/admin/log/{$name}");
+    }
+
+    public function stopBots()
+    {
+        shell_exec("killall python3");
+        shell_exec("killall geckodriver");
+        shell_exec("killall firefox");
+        return view('pages.admin_start_bot', ['stopped' => true]);
+    }
+
     public function bots(Request $request)
     {
         $bot = ($request->input('bot') == "new") ? "new_bot" : "old_bot";
@@ -19,12 +48,7 @@ class AppController extends Controller
             "min_time"  => $request->input('min_time'),
             "max_time"  => $request->input('max_time')
         ]));
-
-        $python = "python";
-        if (!(strncasecmp(PHP_OS, 'WIN', 3) == 0))
-            $python += "3";
-            
-        shell_exec("{$python} ../../{$bot}/bot.py {$encrypted} > /var/log/custom.log 2>&1 &");
+        shell_exec("python3 ../../{$bot}/bot.py {$encrypted} > /var/log/custom.log 2>&1 &");
         return view('pages.admin_start_bot', ['success' => true]);
     }
 
