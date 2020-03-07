@@ -19,7 +19,12 @@ class AppController extends Controller
             "min_time"  => $request->input('min_time'),
             "max_time"  => $request->input('max_time')
         ]));
-        shell_exec("python3 ../../{$bot}/bot.py {$encrypted} > /var/log/custom.log 2>&1 &");
+
+        $python = "python";
+        if (!(strncasecmp(PHP_OS, 'WIN', 3) == 0))
+            $python += "3";
+            
+        shell_exec("{$python} ../../{$bot}/bot.py {$encrypted} > /var/log/custom.log 2>&1 &");
         return view('pages.admin_start_bot', ['success' => true]);
     }
 
