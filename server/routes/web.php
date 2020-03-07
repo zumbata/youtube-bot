@@ -19,8 +19,8 @@ Route::redirect('/admin', '/admin/login');
 Route::redirect('/admin/bot', '/admin/bots')->middleware('isLogged');
 Route::view('/admin/bots', 'pages.admin_start_bot')->middleware('isLogged');
 Route::get('/admin/bot/{bot}',function ($bot) {
-    return view('pages.admin_bot', ['bot' => $bot])->middleware('isLogged');
-});
+    return view('pages.admin_bot', ['bot' => $bot]);
+})->middleware('isLogged');
 Route::get('/admin/login', function (Request $request) {
     if($request->session()->has('isAdminLogged') && $request->session()->get('isAdminLogged') == true)
         return redirect('/admin/bots');
