@@ -48,12 +48,12 @@ def func(proxies):
 		# }
 		# profile = webdriver.FirefoxProfile()
 		# profile.set_preference('general.useragent.override', random.choice(uas))
-		try:
-			driver = webdriver.Firefox(options=options, proxy=proxy)
-		except Exception as e:
-			print(f"{datetime.now().strftime('%H:%M:%S')} : Exception occured in line {sys._getframe().f_lineno}")
-			print(str(e))
-			continue
+		# try:
+		driver = webdriver.Firefox(options=options, proxy=proxy)
+		# except Exception as e:
+		# 	print(f"{datetime.now().strftime('%H:%M:%S')} : Exception occured in line {sys._getframe().f_lineno}")
+		# 	print(str(e))
+		# 	continue
 		driver.set_page_load_timeout(10)
 		driver.implicitly_wait(10)
 		try:
