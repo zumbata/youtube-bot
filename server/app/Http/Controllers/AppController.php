@@ -32,6 +32,7 @@ class AppController extends Controller
         shell_exec("killall python3");
         shell_exec("killall geckodriver");
         shell_exec("killall firefox");
+        shell_exec("killall firefox-bin");
         return view('pages.admin_start_bot', ['stopped' => true]);
     }
 
