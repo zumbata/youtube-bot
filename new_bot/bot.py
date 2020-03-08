@@ -43,20 +43,23 @@ def func(proxies):
 		# profile.set_preference('general.useragent.override', random.choice(uas))
 		try:
 			driver = webdriver.Firefox(options=options, capabilities=firefox_capabilities, log_path='/var/log/geckodriver.log') #firefox_profile=profile, 
-		except:
+		except Exception as e:
 			try:
 				print(f"{datetime.now().strftime('%H:%M:%S')} : Exception occured in line {sys._getframe().f_lineno}")
+				print(str(e))
 				driver.quit()
-			except:
+			except Exception as e:
 				print(f"{datetime.now().strftime('%H:%M:%S')} : Exception occured in line {sys._getframe().f_lineno}")
+				print(str(e))
 				pass
 			continue
 		driver.set_page_load_timeout(10)
 		driver.implicitly_wait(10)
 		try:
 			driver.get('https://youtube.com/')
-		except:
+		except Exception as e:
 			print(f"{datetime.now().strftime('%H:%M:%S')} : Exception occured in line {sys._getframe().f_lineno}")
+			print(str(e))
 			driver.quit()
 			continue
 		try:
@@ -64,16 +67,18 @@ def func(proxies):
 			button = driver.find_element(By.CSS_SELECTOR, '#search-icon-legacy')
 			driver.execute_script(f'arguments[0].value = "{random.choice(keywords)}";', search)
 			driver.execute_script(f'arguments[0].click();', button)
-		except:
+		except Exception as e:
 			print(f"{datetime.now().strftime('%H:%M:%S')} : Exception occured in line {sys._getframe().f_lineno}")
+			print(str(e))
 			driver.quit()
 			continue
 		flag = False
 		for x in range(1,20):
 			try:
 				link = driver.find_element(By.CSS_SELECTOR, 'ytd-video-renderer.ytd-item-section-renderer:nth-child({}) > div:nth-child(1) > ytd-thumbnail:nth-child(1) > a'.format(str(x)))
-			except:
+			except Exception as e:
 				print(f"{datetime.now().strftime('%H:%M:%S')} : Exception occured in line {sys._getframe().f_lineno}")
+				print(str(e))
 				continue
 			driver.execute_script('arguments[0].scrollIntoView();', link)
 			href = link.get_attribute('href')
@@ -85,16 +90,18 @@ def func(proxies):
 			driver.get(site)
 		try:
 			play = driver.find_element(By.CSS_SELECTOR, '.ytp-play-button')
-		except:
+		except Exception as e:
 			print(f"{datetime.now().strftime('%H:%M:%S')} : Exception occured in line {sys._getframe().f_lineno}")
+			print(str(e))
 			driver.quit()
 			continue
 		text = play.get_attribute('title')
 		if (text.find('Play') != -1):
 			try:
 				driver.execute_script('arguments[0].click();', play)
-			except:
+			except Exception as e:
 				print(f"{datetime.now().strftime('%H:%M:%S')} : Exception occured in line {sys._getframe().f_lineno}")
+				print(str(e))
 				driver.quit()
 				continue
 		time.sleep(random.uniform(sleep_min, sleep_max))
