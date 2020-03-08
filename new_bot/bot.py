@@ -38,10 +38,10 @@ def func(proxies):
 			'ftpProxy': PROXY,
 			'sslProxy': PROXY,
 		}
-		# profile = webdriver.FirefoxProfile()
+		profile = webdriver.FirefoxProfile()
 		# profile.set_preference('general.useragent.override', random.choice(uas))
 		try:
-			driver = webdriver.Firefox(options=options, capabilities=firefox_capabilities, log_path='/var/log/geckodriver.log') #firefox_profile=profile, 
+			driver = webdriver.Firefox(options=options, firefox_binary='/usr/bin/firefox', executable_path='/usr/bin/geckodriver', capabilities=firefox_capabilities, service_log_path='/var/log/geckodriver.log', firefox_profile=profile)
 		except Exception as e:
 			print(f"{datetime.now().strftime('%H:%M:%S')} : Exception occured in line {sys._getframe().f_lineno}")
 			print(str(e))
