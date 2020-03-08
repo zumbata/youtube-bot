@@ -11,6 +11,7 @@ from selenium.webdriver.common.by import By
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.proxy import Proxy, ProxyType
 
 def LoadUserAgents(uafile):
 	uas = []
@@ -30,18 +31,25 @@ def func(proxies):
 		PROXY = prx['ip'] + ':' + prx['port']
 		options = Options()
 		options.headless = True
-		firefox_capabilities = webdriver.DesiredCapabilities.FIREFOX
-		firefox_capabilities['marionette'] = False
-		firefox_capabilities['proxy'] = {
-			'proxyType': 'MANUAL',
+		proxy = Proxy({
+			'proxyType': ProxyType.MANUAL,
 			'httpProxy': PROXY,
 			'ftpProxy': PROXY,
 			'sslProxy': PROXY,
-		}
-		profile = webdriver.FirefoxProfile()
+			'noProxy': ''
+		})
+		# firefox_capabilities = webdriver.DesiredCapabilities.FIREFOX
+		# firefox_capabilities['marionette'] = True
+		# firefox_capabilities['proxy'] = {
+		# 	'proxyType': 'MANUAL',
+		# 	'httpProxy': PROXY,
+		# 	'ftpProxy': PROXY,
+		# 	'sslProxy': PROXY,
+		# }
+		# profile = webdriver.FirefoxProfile()
 		# profile.set_preference('general.useragent.override', random.choice(uas))
 		try:
-			driver = webdriver.Firefox(options=options, firefox_binary='/usr/bin/firefox', executable_path='/usr/bin/geckodriver', capabilities=firefox_capabilities, service_log_path='/var/log/geckodriver.log', firefox_profile=profile)
+			driver = webdriver.Firefox(options=options, log_path='/var/log/geckodriver.log', proxy=proxy)
 		except Exception as e:
 			print(f"{datetime.now().strftime('%H:%M:%S')} : Exception occured in line {sys._getframe().f_lineno}")
 			print(str(e))
