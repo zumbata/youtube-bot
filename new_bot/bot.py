@@ -29,24 +29,23 @@ num_threads = data['threads']
 proxies = data['proxies']
 keywords = data['keywords']
 
-for prx in proxies:
-	PROXY = prx['ip'] + ':' + prx['port']
+for proxy in proxies:
 	options = Options()
 	options.headless = True
 	proxy = Proxy({
 		'proxyType': ProxyType.MANUAL,
-		'httpProxy': PROXY,
-		'ftpProxy': PROXY,
-		'sslProxy': PROXY,
+		'httpProxy': proxy,
+		'ftpProxy': proxy,
+		'sslProxy': proxy,
 		'noProxy': ''
 	})
 	# firefox_capabilities = webdriver.DesiredCapabilities.FIREFOX
 	# firefox_capabilities['marionette'] = True
 	# firefox_capabilities['proxy'] = {
 	# 	'proxyType': 'MANUAL',
-	# 	'httpProxy': PROXY,
-	# 	'ftpProxy': PROXY,
-	# 	'sslProxy': PROXY,
+	# 	'httpProxy': proxy,
+	# 	'ftpProxy': proxy,
+	# 	'sslProxy': proxy,
 	# }
 	# profile = webdriver.FirefoxProfile()
 	# profile.set_preference('general.useragent.override', random.choice(uas))
@@ -114,5 +113,5 @@ for prx in proxies:
 	element = driver.find_element(By.CSS_SELECTOR, 'ytd-compact-video-renderer.style-scope:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > a:nth-child(1)')
 	driver.execute_script('arguments[0].click();', element)
 	time.sleep(random.uniform(5, 10))
-	print(f"{datetime.now().strftime('%H:%M:%S')} : Viewed the video with proxy {PROXY} successfully!")
+	print(f"{datetime.now().strftime('%H:%M:%S')} : Viewed the video with proxy {proxy} successfully!")
 	driver.quit()
