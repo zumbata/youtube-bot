@@ -31,7 +31,6 @@ def func(proxies):
 		options = Options()
 		options.headless = True
 		firefox_capabilities = webdriver.DesiredCapabilities.FIREFOX
-		firefox_capabilities['marionette'] = True
 		firefox_capabilities['proxy'] = {
 			'proxyType': 'MANUAL',
 			'httpProxy': PROXY,
