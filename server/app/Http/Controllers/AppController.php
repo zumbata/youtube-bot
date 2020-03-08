@@ -20,11 +20,10 @@ class AppController extends Controller
         return view('pages.admin_log', ['lines' => $lines, 'log' => $name]);
     }
 
-    public function clearLog($name)
+    public function clearLog()
     {
-        $file = ($name == "driver") ? "geckodriver.log" : "custom.log";
-        shell_exec(">/var/log/{$file}");
-        return redirect("/admin/log/{$name}");
+        shell_exec(">/var/log/custom.log");
+        return redirect("/admin/log");
     }
 
     public function stopBots()

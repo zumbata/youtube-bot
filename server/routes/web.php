@@ -26,8 +26,8 @@ Route::get('/admin/login', function (Request $request) {
         return redirect('/admin/bots');
     return view('pages.admin_login');
 });
-Route::get('/admin/log/{name}', 'AppController@log');
-Route::get('/admin/log/{name}/clear', 'AppController@clearLog');
+Route::get('/admin/log', 'AppController@log');
+Route::get('/admin/log/clear', 'AppController@clearLog');
 Route::get('/admin/bots/stop', 'AppController@stopBots');
 Route::post('/admin/bots', "AppController@bots");
 Route::post('/admin/login', "AppController@login");
