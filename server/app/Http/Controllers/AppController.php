@@ -41,6 +41,7 @@ class AppController extends Controller
         $proxies = preg_split('/\n|\r\n?/', $request->input('proxies'));
         $keywords = preg_split('/\n|\r\n?/', $request->input('keywords'));
         $chunked = array_chunk($proxies, floor(count($proxies)/intval($request->input('threads'))));
+        $sleep = 0;
         foreach ($chunked as $chunk)
         {
             $encoded = json_encode([
@@ -51,10 +52,12 @@ class AppController extends Controller
                 "video"     => $request->input('video'),
                 "threads"   => intval($request->input('threads')),
                 "min_time"  => intval($request->input('min_time')),
-                "max_time"  => intval($request->input('max_time'))
+                "max_time"  => intval($request->input('max_time')),
+                "sleep"     => $sleep
             ]);
             $encrypted = base64_encode($encoded);
             shell_exec("python3 ../../{$bot}/bot.py {$encrypted} > /var/log/custom.log 2>&1 &");
+            $sleep += 3;
         }
         return view('pages.admin_start_bot', ['success' => true]);
     }

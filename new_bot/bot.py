@@ -28,6 +28,7 @@ sleep_max = data['max_time']
 num_threads = data['threads']
 proxies = data['proxies']
 keywords = data['keywords']
+time.sleep(data['sleep'])
 
 for proxy in proxies:
 	options = Options()
@@ -50,7 +51,7 @@ for proxy in proxies:
 	# profile = webdriver.FirefoxProfile()
 	# profile.set_preference('general.useragent.override', random.choice(uas))
 	try:
-		driver = webdriver.Firefox(options=options, log_path='/var/log/geckodriver.log', proxy=proxy)
+		driver = webdriver.Firefox(options=options, proxy=proxy, log_path='/var/log/geckodriver.log')
 	except Exception as e:
 		print(f"{datetime.now().strftime('%H:%M:%S')} : Exception occured in line {sys._getframe().f_lineno}")
 		print(str(e))
