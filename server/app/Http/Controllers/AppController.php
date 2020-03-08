@@ -38,17 +38,24 @@ class AppController extends Controller
     public function bots(Request $request)
     {
         $bot = ($request->input('bot') == "new") ? "new_bot" : "old_bot";
-        $encrypted = base64_encode(json_encode([
-            "accounts"  => $request->input('accounts'),
-            "comments"  => $request->input('comments'),
-            "proxies"   => $request->input('proxies'),
-            "keywords"  => $request->input('keywords'),
-            "video"     => $request->input('video'),
-            "threads"   => $request->input('threads'),
-            "min_time"  => $request->input('min_time'),
-            "max_time"  => $request->input('max_time')
-        ]));
-        shell_exec("python3 ../../{$bot}/bot.py {$encrypted} > /var/log/custom.log 2>&1 &");
+        $proxies = preg_split('/\n|\r\n?/', $request->input('proxies'));
+        $keywords = preg_split('/\n|\r\n?/', $request->input('keywords'));
+        $chunked = array_chunk($proxies, floor(count($proxies)/intval($request->input('threads'))));
+        foreach ($chunked as $chunk)
+        {
+            $encoded = json_encode([
+                "accounts"  => $request->input('accounts'),
+                "comments"  => $request->input('comments'),
+                "proxies"   => $chunk,
+                "keywords"  => $keywords,
+                "video"     => $request->input('video'),
+                "threads"   => intval($request->input('threads')),
+                "min_time"  => intval($request->input('min_time')),
+                "max_time"  => intval($request->input('max_time'))
+            ]);
+            $encrypted = base64_encode($encoded);
+            shell_exec("python3 ../../{$bot}/bot.py {$encrypted} > /var/log/custom.log 2>&1 &");
+        }
         return view('pages.admin_start_bot', ['success' => true]);
     }
 
