@@ -33,25 +33,25 @@ time.sleep(data['sleep'])
 for proxy in proxies:
 	options = Options()
 	options.headless = True
-	proxy = Proxy({
-		'proxyType': ProxyType.MANUAL,
-		'httpProxy': proxy,
-		'ftpProxy': proxy,
-		'sslProxy': proxy,
-		'noProxy': ''
-	})
-	# firefox_capabilities = webdriver.DesiredCapabilities.FIREFOX
-	# firefox_capabilities['marionette'] = True
-	# firefox_capabilities['proxy'] = {
-	# 	'proxyType': 'MANUAL',
+	# proxy = Proxy({
+	# 	'proxyType': ProxyType.MANUAL,
 	# 	'httpProxy': proxy,
 	# 	'ftpProxy': proxy,
 	# 	'sslProxy': proxy,
-	# }
+	# 	'noProxy': ''
+	# })
+	firefox_capabilities = webdriver.DesiredCapabilities.FIREFOX
+	firefox_capabilities['marionette'] = True
+	firefox_capabilities['proxy'] = {
+		'proxyType': 'MANUAL',
+		'httpProxy': proxy,
+		'ftpProxy': proxy,
+		'sslProxy': proxy,
+	}
 	# profile = webdriver.FirefoxProfile()
 	# profile.set_preference('general.useragent.override', random.choice(uas))
 	try:
-		driver = webdriver.Firefox(options=options, proxy=proxy, log_path='/var/log/geckodriver.log')
+		driver = webdriver.Firefox(options=options, capabilities=firefox_capabilities, log_path='/var/log/geckodriver.log')
 	except Exception as e:
 		print(f"{datetime.now().strftime('%H:%M:%S')} : Exception occured in line {sys._getframe().f_lineno}")
 		print(str(e))
