@@ -6,18 +6,17 @@ use Illuminate\Http\Request;
 
 class AppController extends Controller
 {
-    public function log($name)
+    public function log()
     {
-        $file_to_open = ($name == 'bot') ? '/var/log/custom.log' : '/var/log/geckodriver.log';
         $lines = [];
-        if ($fh = fopen($file_to_open, 'r')) {
+        if ($fh = fopen('/var/log/custom.log', 'r')) {
             while (!feof($fh)) {
                 $line = fgets($fh);
                 $lines[] = $line;
             }
             fclose($fh);
         }
-        return view('pages.admin_log', ['lines' => $lines, 'log' => $name]);
+        return view('pages.admin_log', ['lines' => $lines]);
     }
 
     public function clearLog()
