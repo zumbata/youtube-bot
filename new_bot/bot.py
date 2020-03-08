@@ -43,14 +43,8 @@ def func(proxies):
 		try:
 			driver = webdriver.Firefox(options=options, capabilities=firefox_capabilities, log_path='/var/log/geckodriver.log') #firefox_profile=profile, 
 		except Exception as e:
-			try:
-				print(f"{datetime.now().strftime('%H:%M:%S')} : Exception occured in line {sys._getframe().f_lineno}")
-				print(str(e))
-				driver.quit()
-			except Exception as e:
-				print(f"{datetime.now().strftime('%H:%M:%S')} : Exception occured in line {sys._getframe().f_lineno}")
-				print(str(e))
-				pass
+			print(f"{datetime.now().strftime('%H:%M:%S')} : Exception occured in line {sys._getframe().f_lineno}")
+			print(str(e))
 			continue
 		driver.set_page_load_timeout(10)
 		driver.implicitly_wait(10)
