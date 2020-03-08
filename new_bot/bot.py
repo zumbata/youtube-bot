@@ -28,6 +28,7 @@ def func(proxies):
 	global sleep_min, sleep_max, site, keywords#, uas
 	for prx in proxies:
 		PROXY = prx['ip'] + ':' + prx['port']
+		print(PROXY)
 		options = Options()
 		options.headless = True
 		firefox_capabilities = webdriver.DesiredCapabilities.FIREFOX
