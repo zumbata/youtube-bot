@@ -49,7 +49,7 @@ def func(proxies):
 		# profile = webdriver.FirefoxProfile()
 		# profile.set_preference('general.useragent.override', random.choice(uas))
 		try:
-			driver = webdriver.Firefox(options=options, log_path='/var/log/geckodriver.log', proxy=proxy)
+			driver = webdriver.Firefox(options=options, proxy=proxy)
 		except Exception as e:
 			print(f"{datetime.now().strftime('%H:%M:%S')} : Exception occured in line {sys._getframe().f_lineno}")
 			print(str(e))
