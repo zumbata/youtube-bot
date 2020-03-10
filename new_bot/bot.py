@@ -59,6 +59,7 @@ def startBrowser(proxy):
 	profile.set_preference("network.proxy.type", 1)
 	profile.set_preference("network.proxy.http", proxy.split(':')[0])
 	profile.set_preference("network.proxy.http_port", int(proxy.split(':')[1]))
+	profile.set_preference("webdriver.log.file", "/var/www/youtube-bot/firefox.log")
 	# profile.set_preference('general.useragent.override', random.choice(uas))
 	profile.update_preferences()
 	try:
