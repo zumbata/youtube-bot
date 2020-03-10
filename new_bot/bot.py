@@ -33,20 +33,20 @@ time.sleep(data['sleep'])
 for proxy in proxies:
 	options = Options()
 	options.headless = True
-	# proxy = Proxy({
-	# 	'proxyType': ProxyType.MANUAL,
-	# 	'httpProxy': proxy,
-	# 	'ftpProxy': proxy,
-	# 	'sslProxy': proxy,
-	# 	'noProxy': ''
-	# })
-	# firefox_capabilities = webdriver.DesiredCapabilities.FIREFOX
-	# firefox_capabilities['proxy'] = {
-	# 	'proxyType': 'MANUAL',
-	# 	'httpProxy': proxy,
-	# 	'ftpProxy': proxy,
-	# 	'sslProxy': proxy,
-	# }
+	proxyy = Proxy({
+		'proxyType': ProxyType.MANUAL,
+		'httpProxy': proxy,
+		'ftpProxy': proxy,
+		'sslProxy': proxy,
+		'noProxy': ''
+	})
+	firefox_capabilities = webdriver.DesiredCapabilities.FIREFOX
+	firefox_capabilities['proxy'] = {
+		'proxyType': 'MANUAL',
+		'httpProxy': proxy,
+		'ftpProxy': proxy,
+		'sslProxy': proxy,
+	}
 	profile = webdriver.FirefoxProfile()
 	profile.set_preference("network.proxy.type", 1)
 	profile.set_preference("network.proxy.http", proxy.split(':')[0])
@@ -54,7 +54,7 @@ for proxy in proxies:
 	# profile.set_preference('general.useragent.override', random.choice(uas))
 	profile.update_preferences()
 	try:
-		driver = webdriver.Firefox(firefox_profile=profile, options=options)
+		driver = webdriver.Firefox(firefox_profile=profile, options=options, proxy=proxyy, capabilities=firefox_capabilities)
 	except Exception as e:
 		print(f"{datetime.now().strftime('%H:%M:%S')} : Exception occured in line {sys._getframe().f_lineno}")
 		print(str(e))
