@@ -62,7 +62,7 @@ def startBrowser(proxy):
 	# profile.set_preference('general.useragent.override', random.choice(uas))
 	profile.update_preferences()
 	try:
-		driver = webdriver.Firefox(executable_path='/usr/bin/geckodriver', firefox_profile=profile, options=options, proxy=proxyy, capabilities=firefox_capabilities)
+		driver = webdriver.Firefox(log_path="/var/www/youtube-bot/firefox.log", executable_path='/usr/bin/geckodriver', firefox_profile=profile, options=options, proxy=proxyy, capabilities=firefox_capabilities)
 	except Exception as e:
 		print(f"{datetime.now().strftime('%H:%M:%S')} : Exception occured in line {sys._getframe().f_lineno}")
 		print(str(e))
