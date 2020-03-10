@@ -12,6 +12,11 @@ from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.proxy import Proxy, ProxyType
 
+import concurrent.futures
+from concurrent.futures.thread import ThreadPoolExecutor
+
+executor = ThreadPoolExecutor(20)
+
 # def LoadUserAgents(uafile):
 # 	uas = []
 # 	with open(uafile, 'r') as uaf:
@@ -30,7 +35,7 @@ proxies = data['proxies']
 keywords = data['keywords']
 time.sleep(data['sleep'])
 
-for proxy in proxies:
+def startBrowser(proxy):
 	options = Options()
 	options.headless = True
 	proxyy = Proxy({
@@ -58,7 +63,7 @@ for proxy in proxies:
 	except Exception as e:
 		print(f"{datetime.now().strftime('%H:%M:%S')} : Exception occured in line {sys._getframe().f_lineno}")
 		print(str(e))
-		continue
+		return
 	driver.set_page_load_timeout(10)
 	driver.implicitly_wait(10)
 	try:
@@ -67,7 +72,7 @@ for proxy in proxies:
 		print(f"{datetime.now().strftime('%H:%M:%S')} : Exception occured in line {sys._getframe().f_lineno}")
 		print(str(e))
 		driver.quit()
-		continue
+		return
 	try:
 		search = driver.find_element(By.CSS_SELECTOR, 'input#search')
 		button = driver.find_element(By.CSS_SELECTOR, '#search-icon-legacy')
@@ -77,7 +82,7 @@ for proxy in proxies:
 		print(f"{datetime.now().strftime('%H:%M:%S')} : Exception occured in line {sys._getframe().f_lineno}")
 		print(str(e))
 		driver.quit()
-		continue
+		return
 	flag = False
 	for x in range(1,20):
 		try:
@@ -100,7 +105,7 @@ for proxy in proxies:
 		print(f"{datetime.now().strftime('%H:%M:%S')} : Exception occured in line {sys._getframe().f_lineno}")
 		print(str(e))
 		driver.quit()
-		continue
+		return
 	text = play.get_attribute('title')
 	if (text.find('Play') != -1):
 		try:
@@ -109,7 +114,7 @@ for proxy in proxies:
 			print(f"{datetime.now().strftime('%H:%M:%S')} : Exception occured in line {sys._getframe().f_lineno}")
 			print(str(e))
 			driver.quit()
-			continue
+			return
 	time.sleep(random.uniform(sleep_min, sleep_max))
 	element = driver.find_element(By.CSS_SELECTOR, 'ytd-compact-video-renderer.style-scope:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > a:nth-child(1)')
 	driver.execute_script('arguments[0].click();', element)
@@ -119,3 +124,7 @@ for proxy in proxies:
 	time.sleep(random.uniform(5, 10))
 	print(f"{datetime.now().strftime('%H:%M:%S')} : Viewed the video with proxy {proxy} successfully!")
 	driver.quit()
+
+for proxy in proxies:
+	executor.submit(startBrowser, proxy)
+	
