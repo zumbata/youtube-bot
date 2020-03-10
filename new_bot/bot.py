@@ -75,7 +75,7 @@ def startBrowser(proxy):
 	except Exception as e:
 		print(f"{datetime.now().strftime('%H:%M:%S')} : Exception occured in line {sys._getframe().f_lineno}")
 		print(str(e))
-		driver.quit()
+		driver.close()
 		return
 	try:
 		search = driver.find_element(By.CSS_SELECTOR, 'input#search')
@@ -84,8 +84,8 @@ def startBrowser(proxy):
 		driver.execute_script(f'arguments[0].click();', button)
 	except Exception as e:
 		print(f"{datetime.now().strftime('%H:%M:%S')} : Exception occured in line {sys._getframe().f_lineno}")
-		print(str(e))
-		driver.quit()
+		print(str(e))	
+		driver.close()
 		return
 	flag = False
 	for x in range(1,20):
@@ -108,7 +108,7 @@ def startBrowser(proxy):
 	except Exception as e:
 		print(f"{datetime.now().strftime('%H:%M:%S')} : Exception occured in line {sys._getframe().f_lineno}")
 		print(str(e))
-		driver.quit()
+		driver.close()
 		return
 	text = play.get_attribute('title')
 	if (text.find('Play') != -1):
@@ -117,7 +117,7 @@ def startBrowser(proxy):
 		except Exception as e:
 			print(f"{datetime.now().strftime('%H:%M:%S')} : Exception occured in line {sys._getframe().f_lineno}")
 			print(str(e))
-			driver.quit()
+			driver.close()
 			return
 	time.sleep(random.uniform(sleep_min, sleep_max))
 	element = driver.find_element(By.CSS_SELECTOR, 'ytd-compact-video-renderer.style-scope:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > a:nth-child(1)')
@@ -127,7 +127,7 @@ def startBrowser(proxy):
 	driver.execute_script('arguments[0].click();', element)
 	time.sleep(random.uniform(5, 10))
 	print(f"{datetime.now().strftime('%H:%M:%S')} : Viewed the video with proxy {proxy} successfully!")
-	driver.quit()
+	driver.close()
 
 for proxy in proxies:
 	executor.submit(startBrowser, proxy)
