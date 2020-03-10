@@ -38,6 +38,7 @@ time.sleep(data['sleep'])
 def startBrowser(proxy):
 	options = Options()
 	options.headless = True
+	options.log.level = "trace"
 	proxyy = Proxy({
 		'proxyType': ProxyType.MANUAL,
 		'httpProxy': proxy,
