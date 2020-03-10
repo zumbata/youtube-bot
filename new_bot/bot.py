@@ -53,7 +53,7 @@ def startBrowser(proxy):
 		'ftpProxy': proxy,
 		'sslProxy': proxy,
 	}
-	firefox_capabilities['marionette'] = True
+	firefox_capabilities['marionette'] = False
 
 	profile = webdriver.FirefoxProfile()
 	profile.set_preference("network.proxy.type", 1)
