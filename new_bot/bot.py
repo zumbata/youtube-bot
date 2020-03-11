@@ -41,10 +41,16 @@ for proxy in proxies:
 	# profile.set_preference('general.useragent.override', random.choice(uas))
 	profile.update_preferences()
 	try:
-		driver = webdriver.Firefox(firefox_profile=profile, options=options)
+		driver = webdriver.Firefox(firefox_profile=profile, options=options, log_path='/var/log/geckodriver.log')
 	except Exception as e:
 		print(f"{datetime.now().strftime('%H:%M:%S')} : Exception occured in line {sys._getframe().f_lineno}")
 		print(str(e))
+		try:
+			driver.quit()
+		except Exception as e:
+			print(f"{datetime.now().strftime('%H:%M:%S')} : Exception occured in line {sys._getframe().f_lineno}")
+			print(str(e))
+		continue
 	driver.set_page_load_timeout(20)
 	driver.implicitly_wait(20)
 	try:
@@ -52,7 +58,8 @@ for proxy in proxies:
 	except Exception as e:
 		print(f"{datetime.now().strftime('%H:%M:%S')} : Exception occured in line {sys._getframe().f_lineno}")
 		print(str(e))
-		driver.close()
+		driver.quit()
+		continue
 	try:
 		search = driver.find_element(By.CSS_SELECTOR, 'input#search')
 		button = driver.find_element(By.CSS_SELECTOR, '#search-icon-legacy')
@@ -61,7 +68,8 @@ for proxy in proxies:
 	except Exception as e:
 		print(f"{datetime.now().strftime('%H:%M:%S')} : Exception occured in line {sys._getframe().f_lineno}")
 		print(str(e))	
-		driver.close()
+		driver.quit()
+		continue
 	flag = False
 	for x in range(1,20):
 		try:
@@ -83,7 +91,8 @@ for proxy in proxies:
 	except Exception as e:
 		print(f"{datetime.now().strftime('%H:%M:%S')} : Exception occured in line {sys._getframe().f_lineno}")
 		print(str(e))
-		driver.close()
+		driver.quit()
+		continue
 	text = play.get_attribute('title')
 	if (text.find('Play') != -1):
 		try:
@@ -91,7 +100,8 @@ for proxy in proxies:
 		except Exception as e:
 			print(f"{datetime.now().strftime('%H:%M:%S')} : Exception occured in line {sys._getframe().f_lineno}")
 			print(str(e))
-			driver.close()
+			driver.quit()
+			continue
 	try:
 		time.sleep(random.uniform(sleep_min, sleep_max))
 		element = driver.find_element(By.CSS_SELECTOR, 'ytd-compact-video-renderer.style-scope:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > a:nth-child(1)')
@@ -103,6 +113,7 @@ for proxy in proxies:
 	except Exception as e:
 		print(f"{datetime.now().strftime('%H:%M:%S')} : Exception occured in line {sys._getframe().f_lineno}")
 		print(str(e))
-		driver.close()
+		driver.quit()
+		continue
 	print(f"{datetime.now().strftime('%H:%M:%S')} : Viewed the video with proxy {proxy} successfully!")
-	driver.close()
+	driver.quit()
