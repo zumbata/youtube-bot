@@ -114,4 +114,5 @@
 
 body {
   background: linear-gradient(to bottom, #1297cc 10%, #124dcc);
+  background-attachment: fixed;
 }

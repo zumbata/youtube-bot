@@ -78,13 +78,13 @@ this is third example keyword"></textarea>
                 <div class="col">
                     <div class="form-label-group">
                         <input type="number" class="form-control" id="min-time" name="min_time" placeholder="">
-                        <label for="min-time">MIN Watch Time</label>
+                        <label for="min-time">MIN Watch Time (seconds)</label>
                     </div>
                 </div>
                 <div class="col">
                     <div class="form-label-group">
                         <input type="number" class="form-control" id="max-time" name="max_time" placeholder="">
-                        <label for="max-time">MAX Watch Time</label>
+                        <label for="max-time">MAX Watch Time (seconds)</label>
                     </div>
                 </div>
             </div>

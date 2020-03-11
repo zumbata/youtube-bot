@@ -6,6 +6,9 @@
             @if(isset($success) && $success == true)
             <p class="text-success">Bot started successfully.</p>
             @endif
+            @if(isset($stopped) && $stopped == true)
+            <p class="text-success">Bot stopped successfully.</p>
+            @endif
             <div class="row my-3">
                 <div class="col-6">
                     <a class="btn btn-primary text-uppercase" href="/admin/bot/old">Old Bot</a>
