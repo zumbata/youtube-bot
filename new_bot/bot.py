@@ -12,20 +12,15 @@ from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.proxy import Proxy, ProxyType
 
-import concurrent.futures
-from concurrent.futures.thread import ThreadPoolExecutor
-
-executor = ThreadPoolExecutor(20)
-
 # def LoadUserAgents(uafile):
 # 	uas = []
 # 	with open(uafile, 'r') as uaf:
 # 		for ua in uaf.readlines():
 # 			uas.append(ua.strip())
-# 	random.shuffle(uas)
-# 	return uas
+# 	random.shuffle(uas) uas
 
 # uas = LoadUserAgents(f'{os.path.dirname(os.path.realpath(__file__))}/ua.txt')
+
 data = json.loads(base64.b64decode(sys.argv[1]))
 site = data['video']
 sleep_min = data['min_time']
@@ -35,7 +30,7 @@ proxies = data['proxies']
 keywords = data['keywords']
 time.sleep(data['sleep'])
 
-def startBrowser(proxy):
+for proxy in proxies:
 	options = Options()
 	options.headless = True
 	options.log.level = "trace"
@@ -43,24 +38,21 @@ def startBrowser(proxy):
 	profile.set_preference("network.proxy.type", 1)
 	profile.set_preference('network.proxy.socks', proxy.split(':')[0])
 	profile.set_preference('network.proxy.socks_port', int(proxy.split(':')[1]))
-	profile.set_preference("webdriver.log.file", "/var/log/geckodriver.log")
 	# profile.set_preference('general.useragent.override', random.choice(uas))
 	profile.update_preferences()
 	try:
-		driver = webdriver.Firefox(log_path="/var/log/geckodriver.log", firefox_profile=profile, options=options)
+		driver = webdriver.Firefox(firefox_profile=profile, options=options)
 	except Exception as e:
 		print(f"{datetime.now().strftime('%H:%M:%S')} : Exception occured in line {sys._getframe().f_lineno}")
 		print(str(e))
-		return
-	driver.set_page_load_timeout(10)
-	driver.implicitly_wait(10)
+	driver.set_page_load_timeout(20)
+	driver.implicitly_wait(20)
 	try:
 		driver.get('https://youtube.com/')
 	except Exception as e:
 		print(f"{datetime.now().strftime('%H:%M:%S')} : Exception occured in line {sys._getframe().f_lineno}")
 		print(str(e))
 		driver.close()
-		return
 	try:
 		search = driver.find_element(By.CSS_SELECTOR, 'input#search')
 		button = driver.find_element(By.CSS_SELECTOR, '#search-icon-legacy')
@@ -70,7 +62,6 @@ def startBrowser(proxy):
 		print(f"{datetime.now().strftime('%H:%M:%S')} : Exception occured in line {sys._getframe().f_lineno}")
 		print(str(e))	
 		driver.close()
-		return
 	flag = False
 	for x in range(1,20):
 		try:
@@ -93,7 +84,6 @@ def startBrowser(proxy):
 		print(f"{datetime.now().strftime('%H:%M:%S')} : Exception occured in line {sys._getframe().f_lineno}")
 		print(str(e))
 		driver.close()
-		return
 	text = play.get_attribute('title')
 	if (text.find('Play') != -1):
 		try:
@@ -102,17 +92,17 @@ def startBrowser(proxy):
 			print(f"{datetime.now().strftime('%H:%M:%S')} : Exception occured in line {sys._getframe().f_lineno}")
 			print(str(e))
 			driver.close()
-			return
-	time.sleep(random.uniform(sleep_min, sleep_max))
-	element = driver.find_element(By.CSS_SELECTOR, 'ytd-compact-video-renderer.style-scope:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > a:nth-child(1)')
-	driver.execute_script('arguments[0].click();', element)
-	time.sleep(random.uniform(5, 10))
-	element = driver.find_element(By.CSS_SELECTOR, 'ytd-compact-video-renderer.style-scope:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > a:nth-child(1)')
-	driver.execute_script('arguments[0].click();', element)
-	time.sleep(random.uniform(5, 10))
+	try:
+		time.sleep(random.uniform(sleep_min, sleep_max))
+		element = driver.find_element(By.CSS_SELECTOR, 'ytd-compact-video-renderer.style-scope:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > a:nth-child(1)')
+		driver.execute_script('arguments[0].click();', element)
+		time.sleep(random.uniform(5, 10))
+		element = driver.find_element(By.CSS_SELECTOR, 'ytd-compact-video-renderer.style-scope:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > a:nth-child(1)')
+		driver.execute_script('arguments[0].click();', element)
+		time.sleep(random.uniform(5, 10))
+	except Exception as e:
+		print(f"{datetime.now().strftime('%H:%M:%S')} : Exception occured in line {sys._getframe().f_lineno}")
+		print(str(e))
+		driver.close()
 	print(f"{datetime.now().strftime('%H:%M:%S')} : Viewed the video with proxy {proxy} successfully!")
 	driver.close()
-
-for proxy in proxies:
-	executor.submit(startBrowser, proxy)
-	
