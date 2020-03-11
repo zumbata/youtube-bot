@@ -57,6 +57,7 @@ class AppController extends Controller
             $encrypted = base64_encode($encoded);
             $cmd = "python3 ../../{$bot}/bot.py {$encrypted} >> /var/log/custom.log 2>&1 &";
             shell_exec($cmd);
+            $sleep += 2;
         }
         return view('pages.admin_start_bot', ['success' => true]);
     }
