@@ -12,14 +12,15 @@ from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.proxy import Proxy, ProxyType
 
-# def LoadUserAgents(uafile):
-# 	uas = []
-# 	with open(uafile, 'r') as uaf:
-# 		for ua in uaf.readlines():
-# 			uas.append(ua.strip())
-# 	random.shuffle(uas) uas
+def LoadUserAgents(uafile):
+	uas = []
+	with open(uafile, 'r') as uaf:
+		for ua in uaf.readlines():
+			uas.append(ua.strip())
+	random.shuffle(uas)
+	return uas
 
-# uas = LoadUserAgents(f'{os.path.dirname(os.path.realpath(__file__))}/ua.txt')
+uas = LoadUserAgents(f'{os.path.dirname(os.path.realpath(__file__))}/ua.txt')
 
 data = json.loads(base64.b64decode(sys.argv[1]))
 site = data['video']
@@ -38,7 +39,7 @@ for proxy in proxies:
 	profile.set_preference("network.proxy.type", 1)
 	profile.set_preference('network.proxy.socks', proxy.split(':')[0])
 	profile.set_preference('network.proxy.socks_port', int(proxy.split(':')[1]))
-	# profile.set_preference('general.useragent.override', random.choice(uas))
+	profile.set_preference('general.useragent.override', random.choice(uas))
 	profile.update_preferences()
 	try:
 		driver = webdriver.Firefox(firefox_profile=profile, options=options)
@@ -75,8 +76,6 @@ for proxy in proxies:
 		try:
 			link = driver.find_element(By.CSS_SELECTOR, 'ytd-video-renderer.ytd-item-section-renderer:nth-child({}) > div:nth-child(1) > ytd-thumbnail:nth-child(1) > a'.format(str(x)))
 		except Exception as e:
-			print(f"{datetime.now().strftime('%H:%M:%S')} : Exception occured in line {sys._getframe().f_lineno}")
-			print(str(e))
 			continue
 		driver.execute_script('arguments[0].scrollIntoView();', link)
 		href = link.get_attribute('href')
@@ -111,8 +110,6 @@ for proxy in proxies:
 		driver.execute_script('arguments[0].click();', element)
 		time.sleep(random.uniform(5, 10))
 	except Exception as e:
-		print(f"{datetime.now().strftime('%H:%M:%S')} : Exception occured in line {sys._getframe().f_lineno}")
-		print(str(e))
 		driver.quit()
 		continue
 	print(f"{datetime.now().strftime('%H:%M:%S')} : Viewed the video with proxy {proxy} successfully!")
