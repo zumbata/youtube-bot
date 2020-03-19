@@ -61,46 +61,44 @@ for proxy in proxies:
 		print(str(e))
 		driver.quit()
 		continue
+	moveon = True
 	try:
 		search = driver.find_element(By.CSS_SELECTOR, 'input#search')
 		button = driver.find_element(By.CSS_SELECTOR, '#search-icon-legacy')
 		driver.execute_script(f'arguments[0].value = "{random.choice(keywords)}";', search)
 		driver.execute_script(f'arguments[0].click();', button)
 	except Exception as e:
-		print(f"{datetime.now().strftime('%H:%M:%S')} : Exception occured in line {sys._getframe().f_lineno}")
-		print(str(e))	
-		driver.quit()
-		continue
+		moveon = False
 	flag = False
-	for x in range(1,20):
-		try:
-			link = driver.find_element(By.CSS_SELECTOR, 'ytd-video-renderer.ytd-item-section-renderer:nth-child({}) > div:nth-child(1) > ytd-thumbnail:nth-child(1) > a'.format(str(x)))
-		except Exception as e:
-			continue
-		driver.execute_script('arguments[0].scrollIntoView();', link)
-		href = link.get_attribute('href')
-		if href in site :
-			driver.execute_script(f'arguments[0].click();', link)
-			flag = True
-			break
-	if flag == False:
+	if moveon == True:
+		for x in range(1,20):
+			try:
+				link = driver.find_element(By.CSS_SELECTOR, 'ytd-video-renderer.ytd-item-section-renderer:nth-child({}) > div:nth-child(1) > ytd-thumbnail:nth-child(1) > a'.format(str(x)))
+			except Exception as e:
+				continue
+			driver.execute_script('arguments[0].scrollIntoView();', link)
+			href = link.get_attribute('href')
+			if href in site :
+				driver.execute_script(f'arguments[0].click();', link)
+				flag = True
+				break
+	if flag == False or moveon == False:
 		driver.get(site)
+	moveon = True
 	try:
 		play = driver.find_element(By.CSS_SELECTOR, '.ytp-play-button')
 	except Exception as e:
-		print(f"{datetime.now().strftime('%H:%M:%S')} : Exception occured in line {sys._getframe().f_lineno}")
-		print(str(e))
-		driver.quit()
-		continue
-	text = play.get_attribute('title')
-	if (text.find('Play') != -1):
-		try:
-			driver.execute_script('arguments[0].click();', play)
-		except Exception as e:
-			print(f"{datetime.now().strftime('%H:%M:%S')} : Exception occured in line {sys._getframe().f_lineno}")
-			print(str(e))
-			driver.quit()
-			continue
+		moveon = False
+	if moveon == True:
+		text = play.get_attribute('title')
+		if (text.find('Play') != -1):
+			try:
+				driver.execute_script('arguments[0].click();', play)
+			except Exception as e:
+				print(f"{datetime.now().strftime('%H:%M:%S')} : Exception occured in line {sys._getframe().f_lineno}")
+				print(str(e))
+				driver.quit()
+				continue
 	try:
 		time.sleep(random.uniform(sleep_min, sleep_max))
 		element = driver.find_element(By.CSS_SELECTOR, 'ytd-compact-video-renderer.style-scope:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > a:nth-child(1)')
@@ -110,7 +108,6 @@ for proxy in proxies:
 		driver.execute_script('arguments[0].click();', element)
 		time.sleep(random.uniform(5, 10))
 	except Exception as e:
-		driver.quit()
-		continue
+		pass
 	print(f"{datetime.now().strftime('%H:%M:%S')} : Viewed the video with proxy {proxy} successfully!")
 	driver.quit()
