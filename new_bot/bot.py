@@ -12,15 +12,15 @@ from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.proxy import Proxy, ProxyType
 
-def LoadUserAgents(uafile):
-	uas = []
-	with open(uafile, 'r') as uaf:
-		for ua in uaf.readlines():
-			uas.append(ua.strip())
-	random.shuffle(uas)
-	return uas
+# def LoadUserAgents(uafile):
+# 	uas = []
+# 	with open(uafile, 'r') as uaf:
+# 		for ua in uaf.readlines():
+# 			uas.append(ua.strip())
+# 	random.shuffle(uas)
+# 	return uas
 
-uas = LoadUserAgents(f'{os.path.dirname(os.path.realpath(__file__))}/ua.txt')
+# uas = LoadUserAgents(f'{os.path.dirname(os.path.realpath(__file__))}/ua.txt')
 
 data = json.loads(base64.b64decode(sys.argv[1]))
 site = data['video']
@@ -28,7 +28,7 @@ sleep_min = data['min_time']
 sleep_max = data['max_time']
 num_threads = data['threads']
 proxies = data['proxies']
-keywords = data['keywords']
+# keywords = data['keywords']
 time.sleep(data['sleep'])
 
 for proxy in proxies:
@@ -39,7 +39,7 @@ for proxy in proxies:
 	profile.set_preference("network.proxy.type", 1)
 	profile.set_preference('network.proxy.socks', proxy.split(':')[0])
 	profile.set_preference('network.proxy.socks_port', int(proxy.split(':')[1]))
-	profile.set_preference('general.useragent.override', random.choice(uas))
+	# profile.set_preference('general.useragent.override', random.choice(uas))
 	profile.update_preferences()
 	try:
 		driver = webdriver.Firefox(firefox_profile=profile, options=options)
