@@ -7,10 +7,9 @@ options = Options()
 options.headless = True
 options.log.level = "trace"
 prox = sys.argv[1]
+# prox = '209.250.237.162:33361'
 ip = prox.split(':')[0]
 port = prox.split(':')[1]
-print(ip)
-print(port)
 profile = webdriver.FirefoxProfile()
 profile.set_preference("network.proxy.type", 1)
 profile.set_preference("network.proxy.socks", ip)
