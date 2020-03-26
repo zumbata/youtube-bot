@@ -95,6 +95,7 @@ for proxy in proxies:
 		if (text.find('Play') != -1):
 			try:
 				driver.execute_script('arguments[0].click();', play)
+				print('Clicked on "Play"')
 			except Exception as e:
 				print(f"{datetime.now().strftime('%H:%M:%S')} : Exception occured in line {sys._getframe().f_lineno}")
 				print(str(e))
