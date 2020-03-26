@@ -35,14 +35,14 @@ for proxy in proxies:
 	# options = Options()
 	# options.headless = True
 	# options.log.level = "trace"
-	profile = webdriver.FirefoxProfile()
-	profile.set_preference("network.proxy.type", 1)
-	profile.set_preference('network.proxy.socks', proxy.split(':')[0])
-	profile.set_preference('network.proxy.socks_port', int(proxy.split(':')[1]))
+	# profile = webdriver.FirefoxProfile()
+	# profile.set_preference("network.proxy.type", 1)
+	# profile.set_preference('network.proxy.socks', proxy.split(':')[0])
+	# profile.set_preference('network.proxy.socks_port', int(proxy.split(':')[1]))
 	# profile.set_preference('general.useragent.override', random.choice(uas))
-	profile.update_preferences()
+	# profile.update_preferences()
 	try:
-		driver = webdriver.Firefox(firefox_profile=profile)
+		driver = webdriver.Firefox()
 	except Exception as e:
 		print(f"{datetime.now().strftime('%H:%M:%S')} : Exception occured in line {sys._getframe().f_lineno}")
 		print(str(e))
