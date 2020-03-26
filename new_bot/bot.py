@@ -88,6 +88,7 @@ for proxy in proxies:
 	try:
 		play = driver.find_element(By.CSS_SELECTOR, '.ytp-play-button')
 	except Exception as e:
+		print('Didnt get the play button.')
 		moveon = False
 	if moveon == True:
 		text = play.get_attribute('title')
@@ -108,6 +109,7 @@ for proxy in proxies:
 		driver.execute_script('arguments[0].click();', element)
 		time.sleep(random.uniform(5, 10))
 	except Exception as e:
+		print(str(e))
 		pass
 	print(f"{datetime.now().strftime('%H:%M:%S')} : Viewed the video with proxy {proxy} successfully!")
 	driver.quit()
