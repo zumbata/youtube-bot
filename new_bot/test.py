@@ -4,10 +4,9 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import sys
-
 prox = sys.argv[1]
-ip = prox.split(':'[0])
-port = prox.split(':'[1])
+ip = prox.split(':')[0]
+port = prox.split(':')[1]
 profile = webdriver.FirefoxProfile()
 profile.set_preference("network.proxy.type", 1)
 profile.set_preference("network.proxy.socks", ip)
