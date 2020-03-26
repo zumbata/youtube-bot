@@ -8,7 +8,7 @@ import re
 from datetime import datetime
 from selenium.webdriver.common.by import By
 from selenium import webdriver
-from selenium.webdriver.firefox.options import Options
+# from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.proxy import Proxy, ProxyType
 
@@ -32,9 +32,9 @@ proxies = data['proxies']
 time.sleep(data['sleep'])
 
 for proxy in proxies:
-	options = Options()
-	options.headless = True
-	options.log.level = "trace"
+	# options = Options()
+	# options.headless = True
+	# options.log.level = "trace"
 	profile = webdriver.FirefoxProfile()
 	profile.set_preference("network.proxy.type", 1)
 	profile.set_preference('network.proxy.socks', proxy.split(':')[0])
@@ -42,7 +42,7 @@ for proxy in proxies:
 	# profile.set_preference('general.useragent.override', random.choice(uas))
 	profile.update_preferences()
 	try:
-		driver = webdriver.Firefox(firefox_profile=profile, options=options)
+		driver = webdriver.Firefox(firefox_profile=profile)
 	except Exception as e:
 		print(f"{datetime.now().strftime('%H:%M:%S')} : Exception occured in line {sys._getframe().f_lineno}")
 		print(str(e))
