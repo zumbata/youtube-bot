@@ -55,7 +55,7 @@ class AppController extends Controller
                 "sleep"     => $sleep
             ]);
             $encrypted = base64_encode($encoded);
-            $cmd = "python3 ../../{$bot}/bot.py {$encrypted} >> /var/log/custom.log 2>&1 &";
+            $cmd = "export DISPLAY=:99 & python3 ../../{$bot}/bot.py {$encrypted} >> /var/log/custom.log 2>&1 &";
             shell_exec($cmd);
             $sleep += 10;
         }
