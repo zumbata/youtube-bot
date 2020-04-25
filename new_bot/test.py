@@ -4,7 +4,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from time import sleep
 
-proxy = '209.250.237.162:35584'
+proxy = '45.77.91.16:42347 '
 capa = DesiredCapabilities.CHROME
 capa["pageLoadStrategy"] = "none"
 chrome_options = ChromeOptions()
