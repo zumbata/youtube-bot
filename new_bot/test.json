@@ -1,0 +1,21 @@
+{
+    "proxy" : "123.123.123.123:1234",
+    "videos": [
+        {
+            "href" : "https://www.youtube.com/watch?v=MxFoEVzxxb8",
+            "min_time" : 120,
+            "max_time" : 150
+        },
+        {
+            "href" : "https://www.youtube.com/watch?v=MxFoEVzxxb8",
+            "min_time" : 120,
+            "max_time" : 150
+        }, 
+        {
+            "href" : "https://www.youtube.com/watch?v=MxFoEVzxxb8",
+            "min_time" : 120,
+            "max_time" : 150
+        }
+    ],
+    "user_agent" : "asdasdkdrgbfkuasdfakdz"
+}
