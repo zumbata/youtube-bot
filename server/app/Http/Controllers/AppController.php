@@ -62,7 +62,7 @@ class AppController extends Controller
         $bot = ($request->input('bot') == "new") ? "new_bot" : "old_bot";
         if ($file = fopen("../../{$bot}/ua.txt", "r")) {
             while(!feof($file)) {
-                $uas[] = fgets($file);
+                $uas[] = preg_replace("/\r|\n/", "", fgets($file));;
             }
             fclose($file);
         }
@@ -72,8 +72,8 @@ class AppController extends Controller
             $tmp_arr = [];
             $splited = explode(';', $val);
             $tmp_arr['href'] = $splited[0];
-            $tmp_arr['min_time'] = $splited[1];
-            $tmp_arr['max_time'] = $splited[2];
+            $tmp_arr['min_time'] = intval($splited[1]);
+            $tmp_arr['max_time'] = intval($splited[2]);
             return $tmp_arr;
         }, $tmp_videos);
         foreach ($proxies as $proxy)
