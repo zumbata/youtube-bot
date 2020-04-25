@@ -47,7 +47,7 @@ for proxy in proxies:
 	try:
 		driver.find_element(By.CSS_SELECTOR, 'div#container.ytd-masthead')
 	except:
-		print("Bad proxy. Skipping")
+		print(f"{datetime.now().strftime('%H:%M:%S')}: Bad proxy {proxy}. Skipping...")
 		driver.quit()
 		continue
 	driver.find_element(By.CSS_SELECTOR, 'body').send_keys('k')
@@ -60,7 +60,7 @@ for proxy in proxies:
 		driver.execute_script('arguments[0].click();', element)
 		sleep(random.uniform(5, 10))
 	except Exception as e:
-		print(str(e))
+		print(f"{datetime.now().strftime('%H:%M:%S')} : Counldn't watch to other two videos after watching the wanted one.")
 		pass
 	print(f"{datetime.now().strftime('%H:%M:%S')} : Viewed the video with proxy {proxy} successfully!")
 	driver.quit()
