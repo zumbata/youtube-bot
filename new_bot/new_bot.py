@@ -60,7 +60,7 @@ for proxy in proxies:
 		driver.execute_script('arguments[0].click();', element)
 		sleep(random.uniform(5, 10))
 	except Exception as e:
-		print(f"{datetime.now().strftime('%H:%M:%S')} : Counldn't watch to other two videos after watching the wanted one.")
+		print(f"{datetime.now().strftime('%H:%M:%S')} : Couldn't watch to other two videos after watching the wanted one.")
 		pass
 	print(f"{datetime.now().strftime('%H:%M:%S')} : Viewed the video with proxy {proxy} successfully!")
 	driver.quit()
