@@ -4,7 +4,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from time import sleep
 from datetime import datetime
-import random, json, base64, sys
+import random, json, base64, sys, os
 
 def LoadUserAgents(uafile):
 	uas = []
@@ -13,7 +13,7 @@ def LoadUserAgents(uafile):
 			uas.append(ua.strip())
 	return uas
 
-uas = LoadUserAgents('ua.txt')
+uas = LoadUserAgents(f'{os.path.dirname(os.path.realpath(__file__))}/ua.txt')
 
 data = json.loads(base64.b64decode(sys.argv[1]))
 site = data['video']
