@@ -76,17 +76,19 @@ class AppController extends Controller
             $tmp_arr['max_time'] = intval($splited[2]);
             return $tmp_arr;
         }, $tmp_videos);
+        $sleep = 0;
         foreach ($proxies as $proxy)
         {
             $encoded = json_encode([
                 "proxy"      => $proxy,
                 "videos"     => $videos,
-                "user_agent" => $uas[mt_rand(0, count($uas) - 1)]
+                "user_agent" => $uas[mt_rand(0, count($uas) - 1)],
+                "sleep"      => $sleep
             ]);
             $encrypted = base64_encode($encoded);
             $cmd = "python3 ../../{$bot}/new_bot.py {$encrypted} > /dev/null 2>/dev/null &";
             shell_exec($cmd);
-            sleep(10);
+            $sleep += 10;
         }
         return view('pages.admin_start_bot', ['success' => true]);
     }

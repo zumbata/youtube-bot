@@ -27,7 +27,7 @@ driver.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {
 		})
 	"""
 })
-
+sleep(data['sleep'])
 while True:
 	video = random.choice(data['videos'])
 	driver.get(video['href'])
