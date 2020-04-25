@@ -2,6 +2,8 @@ from selenium import webdriver
 from selenium.webdriver import ChromeOptions
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 from time import sleep
 from datetime import datetime
 import random, json, base64, sys, os
@@ -41,15 +43,14 @@ for proxy in proxies:
 			})
 		"""
 	})
-	driver.implicitly_wait(20)
 	driver.get(site)
-	sleep(5)
 	try:
-		driver.find_element(By.CSS_SELECTOR, 'div#container.ytd-masthead')
+		WebDriverWait(driver, 20).until(EC.visibility_of_element_located((By.ID, "movie_player")))
 	except:
-		print(f"{datetime.now().strftime('%H:%M:%S')}: Bad proxy {proxy}. Skipping...")
+		print(f"{datetime.now().strftime('%H:%M:%S')} : Bad proxy {proxy}. Skipping...")
 		driver.quit()
 		continue
+	sleep(5)
 	driver.find_element(By.CSS_SELECTOR, 'body').send_keys('k')
 	sleep(random.uniform(sleep_min, sleep_max))
 	try:
