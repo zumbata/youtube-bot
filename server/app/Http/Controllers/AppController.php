@@ -67,7 +67,7 @@ class AppController extends Controller
             fclose($file);
         }
         $proxies = preg_split('/\n|\r\n?/', $request->input('proxies'));
-        $tmp_videos = preg_split('/\n|\r\n?/', $request->input('proxies'));
+        $tmp_videos = preg_split('/\n|\r\n?/', $request->input('videos'));
         $videos = array_map(function($val) {
             $tmp_arr = [];
             $splited = explode(';', $val);

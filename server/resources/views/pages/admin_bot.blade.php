@@ -38,7 +38,7 @@ this is third example comment"></textarea>
             </div>
             @endif
             <div class="form-row">
-                <div class="col-12">
+                <div class="col-6">
                     <div class="form-group">
                         <label for="proxies">Proxies</label>
                         <textarea class="form-control" name="proxies" id="proxies" rows="10" placeholder="Paste the proxies in the following format:
@@ -53,22 +53,22 @@ example:
 444.444.444.444:3131"></textarea>
                     </div>
                 </div>
-                <!-- <div class="col-6">
+                <div class="col-6">
                     <div class="form-group">
-                        <label for="keywords">Keywords</label>
-                        <textarea class="form-control" rows="10" name="keywords" placeholder="Paste the keywords in the following format:
-keyword
-keyword
-keyword
+                        <label for="videos">Videos</label>
+                        <textarea class="form-control" rows="10" name="videos" placeholder="Paste the keywords in the following format:
+link;min_time;max_time
+link;min_time;max_time
+link;min_time;max_time
 
 example:
-this is an example keyword
-this is another example keyword
-this is third example keyword"></textarea>
+https://www.youtube.com/watch?v=MxFoEVzxxb8;120;180
+https://www.youtube.com/watch?v=asdfsgsdffa;160;200
+https://www.youtube.com/watch?v=adfghrsbntr;220;380"></textarea>
                     </div>
-                </div> -->
+                </div>
             </div>
-            <div class="form-row text-left">
+            <!-- <div class="form-row text-left">
                 <div class="col">
                     <div class="form-label-group">
                         <input type="number" class="form-control" id="threads" name="threads" placeholder="">
@@ -87,22 +87,22 @@ this is third example keyword"></textarea>
                         <label for="max-time">MAX Watch Time (seconds)</label>
                     </div>
                 </div>
-            </div>
-            <div class="form-row text-left">
+            </div> -->
+            <!-- <div class="form-row text-left">
                 <div class="col">
                     <div class="form-label-group">
                         <input type="text" class="form-control" id="video" name="video" placeholder="">
                         <label for="video">Link to Video</label>
                     </div>
                 </div>
-            </div>
+            </div> -->
             @if($bot == 'old')
             <input type="hidden" value="old" name="bot">
             @else
             <input type="hidden" value="new" name="bot">
             @endif
             <div class="form-group py-4">
-               <button class="btn btn-lg btn-primary btn-block text-uppercase w-50 mx-auto" type="submit">Start</button>
+               <button class="btn btn-lg btn-primary btn-block text-uppercase w-100 mx-auto" type="submit">Start</button>
             </div>
         </form>
     </div>
