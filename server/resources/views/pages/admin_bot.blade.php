@@ -38,7 +38,7 @@ this is third example comment"></textarea>
             </div>
             @endif
             <div class="form-row">
-                <div class="col-6">
+                <div class="col-12">
                     <div class="form-group">
                         <label for="proxies">Proxies</label>
                         <textarea class="form-control" name="proxies" id="proxies" rows="10" placeholder="Paste the proxies in the following format:
