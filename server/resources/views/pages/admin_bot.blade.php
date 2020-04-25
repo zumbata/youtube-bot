@@ -53,7 +53,7 @@ example:
 444.444.444.444:3131"></textarea>
                     </div>
                 </div>
-                <div class="col-6">
+                <!-- <div class="col-6">
                     <div class="form-group">
                         <label for="keywords">Keywords</label>
                         <textarea class="form-control" rows="10" name="keywords" placeholder="Paste the keywords in the following format:
@@ -66,7 +66,7 @@ this is an example keyword
 this is another example keyword
 this is third example keyword"></textarea>
                     </div>
-                </div>
+                </div> -->
             </div>
             <div class="form-row text-left">
                 <div class="col">

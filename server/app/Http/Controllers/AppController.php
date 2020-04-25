@@ -28,9 +28,8 @@ class AppController extends Controller
     public function stopBots()
     {
         shell_exec("killall python3");
-        shell_exec("killall geckodriver");
-        shell_exec("killall firefox");
-        shell_exec("killall firefox-bin");
+        shell_exec("killall chromedriver");
+        shell_exec("killall google-chrome");
         return view('pages.admin_start_bot', ['stopped' => true]);
     }
 
@@ -38,7 +37,7 @@ class AppController extends Controller
     {
         $bot = ($request->input('bot') == "new") ? "new_bot" : "old_bot";
         $proxies = preg_split('/\n|\r\n?/', $request->input('proxies'));
-        $keywords = preg_split('/\n|\r\n?/', $request->input('keywords'));
+        // $keywords = preg_split('/\n|\r\n?/', $request->input('keywords'));
         $chunked = array_chunk($proxies, floor(count($proxies)/intval($request->input('threads'))));
         $sleep = 0;
         foreach ($chunked as $chunk)
@@ -47,15 +46,15 @@ class AppController extends Controller
                 "accounts"  => $request->input('accounts'),
                 "comments"  => $request->input('comments'),
                 "proxies"   => $chunk,
-                "keywords"  => $keywords,
+                // "keywords"  => $keywords,
                 "video"     => $request->input('video'),
-                "threads"   => intval($request->input('threads')),
+                // "threads"   => intval($request->input('threads')),
                 "min_time"  => intval($request->input('min_time')),
                 "max_time"  => intval($request->input('max_time')),
                 "sleep"     => $sleep
             ]);
             $encrypted = base64_encode($encoded);
-            $cmd = "export DISPLAY=:99 && python3 ../../{$bot}/bot.py {$encrypted} >> /var/log/custom.log 2>&1 &";
+            $cmd = "python3 ../../{$bot}/new_bot.py {$encrypted} >> /var/log/custom.log 2>&1 &";
             shell_exec($cmd);
             $sleep += 10;
         }
